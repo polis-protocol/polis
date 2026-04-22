@@ -1,0 +1,5 @@
+fly_api_token = "your-fly-api-token"
+app_name      = "polis-bff"
+region        = "gru"
+vm_size       = "shared-cpu-1x"
+vm_memory     = 256

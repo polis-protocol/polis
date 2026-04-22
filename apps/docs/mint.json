@@ -1,0 +1,79 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Polis Protocol",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#BFFF3F",
+    "light": "#D4FF7A",
+    "dark": "#0A0A0F",
+    "background": {
+      "dark": "#0A0A0F",
+      "light": "#FFFFFF"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/polis-protocol/polis"
+    }
+  ],
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://discord.gg/polis"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "introduction",
+        "quickstart",
+        "architecture"
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "guides/theming",
+        "guides/plugins",
+        "guides/deployment"
+      ]
+    },
+    {
+      "group": "Packages",
+      "pages": [
+        "packages/core",
+        "packages/react",
+        "packages/bff",
+        "packages/cli",
+        "packages/contracts",
+        "packages/theme-default"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/overview",
+        "api-reference/categories",
+        "api-reference/topics",
+        "api-reference/auth"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/polis-protocol/polis",
+    "twitter": "https://twitter.com/polisprotocol"
+  }
+}

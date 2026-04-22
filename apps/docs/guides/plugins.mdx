@@ -1,0 +1,67 @@
+---
+title: Plugins
+description: "Extend the Polis Protocol with custom functionality"
+---
+
+# Plugins
+
+Polis supports a lightweight plugin system for extending the BFF schema and adding lifecycle hooks.
+
+## Defining a plugin
+
+```typescript
+import { definePlugin } from '@polis/core';
+import { z } from 'zod';
+
+export const analyticsPlugin = definePlugin({
+  name: 'analytics',
+  version: '0.1.0',
+  schema: (builder) => {
+    // Extend the GraphQL schema via Pothos builder
+    builder.queryField('analytics', (t) =>
+      t.field({
+        type: 'JSON',
+        resolve: () => ({ views: 42 }),
+      })
+    );
+  },
+  hooks: {
+    onTopicCreated: async (topic, ctx) => {
+      // Track topic creation
+      await ctx.analytics.track('topic_created', { topicId: topic.id });
+    },
+    onPostCreated: async (post, ctx) => {
+      await ctx.analytics.track('post_created', { postId: post.id });
+    },
+  },
+});
+```
+
+## Registering plugins
+
+Add plugins to your `polis.config.ts`:
+
+```typescript
+import { defineConfig } from '@polis/core';
+import { analyticsPlugin } from './plugins/analytics';
+
+export default defineConfig({
+  // ...other config
+  plugins: [analyticsPlugin],
+});
+```
+
+## Available hooks
+
+| Hook | Trigger | Arguments |
+|------|---------|-----------|
+| `onTopicCreated` | New topic published | `(topic, context)` |
+| `onPostCreated` | New reply published | `(post, context)` |
+| `onUserCreated` | New user registered | `(user, context)` |
+
+## Guidelines
+
+- Plugins extend the schema — they don't rewrite the core
+- Keep plugins focused on a single concern
+- Use the Pothos builder for type-safe schema extensions
+- Test plugins in isolation with Vitest

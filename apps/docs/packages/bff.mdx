@@ -1,0 +1,57 @@
+---
+title: "@polis/bff"
+description: "Fastify + GraphQL backend-for-frontend gateway"
+---
+
+# @polis/bff
+
+The BFF (Backend-for-Frontend) is a Fastify server that proxies Discourse API calls behind a typed GraphQL interface.
+
+## Running
+
+```bash
+# Development
+pnpm --filter @polis/bff dev
+
+# Production (Docker)
+docker build -f infra/docker/Dockerfile.bff -t polis-bff .
+docker run -p 4000:4000 --env-file .env polis-bff
+```
+
+## Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `POST /graphql` | GraphQL Yoga endpoint |
+| `GET /health` | Healthcheck (returns 200) |
+| `GET /stream/:channel` | SSE real-time stream |
+| `GET /auth/nonce` | SIWE nonce generation |
+| `POST /auth/verify` | SIWE signature verification |
+| `POST /auth/logout` | Session invalidation |
+| `GET /auth/me` | Current user info |
+
+## GraphQL Schema
+
+### Queries
+
+- `categories` — List all categories
+- `topics(categorySlug, categoryId)` — Topics in a category
+- `topic(id)` — Single topic with metadata
+- `topicPosts(topicId)` — Posts/replies for a topic
+
+### Mutations
+
+- `createTopic(title, body, categoryId)` — Create a topic (requires auth)
+- `createReply(topicId, body)` — Reply to a topic (requires auth)
+
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | Yes | Postgres connection string |
+| `DISCOURSE_URL` | Yes | Discourse instance URL |
+| `DISCOURSE_API_KEY` | Yes | Discourse API key |
+| `DISCOURSE_API_USERNAME` | Yes | Discourse API username |
+| `SESSION_SECRET` | Yes | Session signing secret |
+| `CORS_ORIGIN` | Yes | Allowed CORS origin |
+| `PORT` | No | Server port (default: 4000) |

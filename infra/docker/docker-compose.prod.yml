@@ -1,0 +1,27 @@
+# Polis Protocol — Production BFF Stack
+# Overlay for production deployment (BFF only — Discourse runs on Hetzner)
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  bff:
+    build:
+      context: ../../
+      dockerfile: infra/docker/Dockerfile.bff
+    restart: unless-stopped
+    ports:
+      - "${BFF_PORT:-4000}:4000"
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: ${DATABASE_URL}
+      DISCOURSE_URL: ${DISCOURSE_URL}
+      DISCOURSE_API_KEY: ${DISCOURSE_API_KEY}
+      DISCOURSE_API_USERNAME: ${DISCOURSE_API_USERNAME}
+      SESSION_SECRET: ${SESSION_SECRET}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

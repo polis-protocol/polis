@@ -1,0 +1,80 @@
+---
+title: Topics
+description: "Topic queries and mutations"
+---
+
+# Topics
+
+## List topics
+
+```graphql
+query Topics($categorySlug: String, $categoryId: Int) {
+  topics(categorySlug: $categorySlug, categoryId: $categoryId) {
+    id
+    title
+    slug
+    postsCount
+    createdAt
+    pinned
+    categoryId
+  }
+}
+```
+
+## Get topic
+
+```graphql
+query Topic($id: Int!) {
+  topic(id: $id) {
+    id
+    title
+    slug
+    postsCount
+    createdAt
+    pinned
+    categoryId
+  }
+}
+```
+
+## Get topic posts
+
+```graphql
+query TopicPosts($topicId: Int!) {
+  topicPosts(topicId: $topicId) {
+    id
+    username
+    body
+    createdAt
+  }
+}
+```
+
+## Create topic
+
+Requires authentication.
+
+```graphql
+mutation CreateTopic($title: String!, $body: String!, $categoryId: Int!) {
+  createTopic(title: $title, body: $body, categoryId: $categoryId) {
+    id
+    title
+    slug
+  }
+}
+```
+
+## Create reply
+
+Requires authentication.
+
+```graphql
+mutation CreateReply($topicId: Int!, $body: String!) {
+  createReply(topicId: $topicId, body: $body) {
+    id
+    username
+    body
+    createdAt
+  }
+}
+```

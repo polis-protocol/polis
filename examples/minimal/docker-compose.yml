@@ -1,0 +1,22 @@
+# Minimal local development stack
+# Start everything: docker compose up -d && pnpm --filter @polis/bff dev && pnpm --filter polis-minimal-example dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: polis
+      POSTGRES_PASSWORD: polis_dev
+      POSTGRES_DB: polis
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U polis"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:

@@ -1,0 +1,78 @@
+# Polis Protocol — Local Development Stack
+# Usage: docker compose -f infra/docker/docker-compose.yml up -d
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-polis}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-polis_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-polis}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-polis}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  discourse:
+    image: bitnami/discourse:3
+    restart: unless-stopped
+    ports:
+      - "${DISCOURSE_PORT:-3000}:3000"
+    environment:
+      DISCOURSE_HOST: localhost
+      DISCOURSE_DATABASE_HOST: discourse-db
+      DISCOURSE_DATABASE_PORT_NUMBER: 5432
+      DISCOURSE_DATABASE_USER: ${DISCOURSE_DB_USER:-discourse}
+      DISCOURSE_DATABASE_PASSWORD: ${DISCOURSE_DB_PASSWORD:-discourse_dev}
+      DISCOURSE_DATABASE_NAME: ${DISCOURSE_DB_NAME:-discourse}
+      DISCOURSE_REDIS_HOST: discourse-redis
+      DISCOURSE_REDIS_PORT_NUMBER: 6379
+      DISCOURSE_SKIP_INSTALL: "no"
+      DISCOURSE_USERNAME: ${DISCOURSE_ADMIN_USER:-admin}
+      DISCOURSE_PASSWORD: ${DISCOURSE_ADMIN_PASSWORD:-admin_password_change_me}
+      DISCOURSE_EMAIL: ${DISCOURSE_ADMIN_EMAIL:-admin@localhost}
+    depends_on:
+      discourse-db:
+        condition: service_healthy
+      discourse-redis:
+        condition: service_healthy
+    volumes:
+      - discourse-data:/bitnami/discourse
+
+  discourse-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DISCOURSE_DB_USER:-discourse}
+      POSTGRES_PASSWORD: ${DISCOURSE_DB_PASSWORD:-discourse_dev}
+      POSTGRES_DB: ${DISCOURSE_DB_NAME:-discourse}
+    volumes:
+      - discourse-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DISCOURSE_DB_USER:-discourse}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  discourse-redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - discourse-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:
+  discourse-data:
+  discourse-pgdata:
+  discourse-redis-data:

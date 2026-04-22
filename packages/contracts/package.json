@@ -1,0 +1,18 @@
+{
+  "name": "@polis/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Solidity smart contracts for Polis Protocol",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test -vvv",
+    "test:coverage": "forge coverage",
+    "fmt": "forge fmt",
+    "fmt:check": "forge fmt --check",
+    "snapshot": "forge snapshot",
+    "deploy:sepolia": "forge script script/DeployPolisArchive.s.sol --rpc-url $BASE_SEPOLIA_RPC --private-key $DEPLOYER_PRIVATE_KEY --broadcast --verify",
+    "deploy:mainnet": "forge script script/DeployPolisArchive.s.sol --rpc-url $BASE_MAINNET_RPC --private-key $DEPLOYER_PRIVATE_KEY --broadcast --verify",
+    "clean": "forge clean"
+  }
+}

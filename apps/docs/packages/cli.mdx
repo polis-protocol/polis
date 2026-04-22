@@ -1,0 +1,51 @@
+---
+title: "@polis/cli"
+description: "CLI tool for scaffolding new Polis cities"
+---
+
+# @polis/cli (create-polis-city)
+
+Scaffolds a new Polis-powered city app from the `@polis/web-starter` template.
+
+## Usage
+
+```bash
+# Create a new city project
+pnpm create polis-city my-city
+
+# Or with npx
+npx create-polis-city my-city
+```
+
+## Commands
+
+### `init` (default)
+
+Interactive scaffolding wizard:
+
+1. **Project name** — Directory name for the new project
+2. **City name** — Display name (e.g., "Ipê City")
+3. **City slug** — URL-safe identifier (e.g., "ipe")
+4. **Features** — Multi-select: SIWE auth, livestream, Farcaster integration
+
+The CLI:
+- Clones `@polis/web-starter` via degit
+- Replaces template placeholders (`{{CITY_NAME}}`, `{{CITY_SLUG}}`)
+- Generates `.env.local` with required variables
+- Runs `pnpm install`
+
+### `doctor`
+
+Checks your environment for required tools:
+
+```bash
+pnpm polis doctor
+```
+
+Validates:
+- Node.js >= 22
+- pnpm installed
+- Docker available
+- Git installed
+- `polis.config.ts` exists
+- `.env.local` exists

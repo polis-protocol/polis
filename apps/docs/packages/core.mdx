@@ -1,0 +1,76 @@
+---
+title: "@polis/core"
+description: "Types, schemas, and configuration for Polis Protocol"
+---
+
+# @polis/core
+
+The foundation package. Zero runtime dependencies beyond Zod and Drizzle. Works in Node and browser.
+
+## Installation
+
+```bash
+pnpm add @polis/core
+```
+
+## defineConfig
+
+Creates a validated Polis configuration:
+
+```typescript
+import { defineConfig } from '@polis/core';
+
+export default defineConfig({
+  city: { name: 'My City', slug: 'my-city', cityId: 1 },
+  bffUrl: 'https://api.mycity.xyz',
+  theme: { tokens: defaultTheme },
+  integrations: {
+    discourse: { url: 'https://forum.mycity.xyz' },
+  },
+  features: { siwe: true },
+  categories: [
+    { slug: 'general', name: 'General', color: '#60A5FA' },
+  ],
+});
+```
+
+All fields are Zod-validated at call time. Invalid config throws immediately.
+
+## Schemas
+
+All entity schemas are exported as Zod objects:
+
+- `CitySchema` — City identity (name, slug, cityId)
+- `CategorySchema` — Forum category (slug, name, color, live flag)
+- `UserSchema` — User profile (wallet, display name, integrations)
+- `PostSchema` / `TopicSchema` — Forum content
+- `PolisConfigSchema` — Full configuration
+
+## Database schema
+
+Drizzle tables exported from `@polis/core/db`:
+
+- `cities` — City registry
+- `users` — User profiles with wallet addresses
+- `sessions` — Lucia session storage
+
+## Theme utilities
+
+```typescript
+import { injectThemeCSS } from '@polis/core';
+
+const css = injectThemeCSS(theme, 'polis');
+// :root { --polis-primary: #BFFF3F; ... }
+```
+
+## Plugin helpers
+
+```typescript
+import { definePlugin } from '@polis/core';
+
+const myPlugin = definePlugin({
+  name: 'my-plugin',
+  version: '0.1.0',
+  hooks: { onTopicCreated: async (topic) => { /* ... */ } },
+});
+```

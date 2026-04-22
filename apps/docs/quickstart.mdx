@@ -1,0 +1,79 @@
+---
+title: Quickstart
+description: "Launch your pop-up city in under 5 minutes"
+---
+
+# Quickstart
+
+## Prerequisites
+
+- Node.js >= 22
+- pnpm >= 10
+- Docker (for local Discourse)
+- Git
+
+## Create a new city
+
+```bash
+pnpm create polis-city my-city
+cd my-city
+```
+
+The CLI will prompt you for:
+- **City name** — Display name (e.g., "Ipê City")
+- **City slug** — URL-safe identifier (e.g., "ipe")
+- **Features** — SIWE auth, livestream support, Farcaster integration
+
+## Configure
+
+Edit `polis.config.ts` at the project root:
+
+```typescript
+import { defineConfig } from '@polis/core';
+import themeDefault from '@polis/theme-default';
+
+export default defineConfig({
+  city: { name: 'My City', slug: 'my-city', cityId: 1 },
+  bffUrl: process.env.NEXT_PUBLIC_BFF_URL!,
+  theme: {
+    tokens: themeDefault,
+    overrides: {
+      primary: '#BFFF3F',
+      serif: 'Instrument Serif',
+      sans: 'Manrope',
+    },
+  },
+  integrations: {
+    discourse: { url: 'http://localhost:3000' },
+  },
+  features: { siwe: true },
+  categories: [
+    { slug: 'general', name: 'General', color: '#60A5FA' },
+  ],
+});
+```
+
+## Start local services
+
+```bash
+# Start Postgres + Discourse
+docker compose -f node_modules/@polis/bff/docker-compose.yml up -d
+
+# Start the BFF
+pnpm --filter @polis/bff dev
+
+# Start your app
+pnpm dev
+```
+
+## Check health
+
+```bash
+# BFF healthcheck
+curl http://localhost:4000/health
+
+# Run doctor
+pnpm polis doctor
+```
+
+Visit `http://localhost:3001/community` to see your forum.

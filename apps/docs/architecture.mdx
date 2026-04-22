@@ -1,0 +1,54 @@
+---
+title: Architecture
+description: "How Polis Protocol packages fit together"
+---
+
+# Architecture
+
+## Package graph
+
+```
+@polis/core          ← Foundation: types, Zod schemas, Drizzle schema, defineConfig
+  ↑
+@polis/theme-default ← Default dark theme tokens
+  ↑
+@polis/bff           ← Fastify + GraphQL Yoga gateway (depends on core)
+  ↑
+@polis/react         ← React components + hooks (depends on core, peer dep on theme)
+  ↑
+@polis/web-starter   ← Next.js 15 template (uses react + theme-default)
+  ↑
+@polis/cli           ← create-polis-city scaffolder (clones web-starter via degit)
+```
+
+`@polis/contracts` is standalone — Solidity + Foundry, no JS runtime dependency.
+
+## Request flow
+
+1. User visits `/community` in the consuming app
+2. `@polis/react` components render, using TanStack Query hooks
+3. Hooks fetch from `@polis/bff` GraphQL endpoint
+4. BFF translates GraphQL to Discourse API calls
+5. Responses flow back through the same path
+6. SSE channel provides real-time updates for new posts/topics
+
+## Key design decisions
+
+### BFF pattern (Backend-for-Frontend)
+
+The BFF exists so that:
+- Consuming apps never call Discourse directly (API key stays server-side)
+- GraphQL provides a typed, stable API regardless of Discourse version
+- Rate limiting, auth, and caching happen in one place
+
+### Framework-agnostic React
+
+`@polis/react` has zero Next.js imports. It works with any React 18+ framework. Next.js-specific features (routing, SSR) are handled by the consuming app or `@polis/web-starter`.
+
+### CSS variable theming
+
+Themes are injected as `--polis-*` CSS custom properties. This avoids conflicts with the consuming app's design system and enables runtime theme switching.
+
+### Onchain archive
+
+`PolisArchive.sol` records IPFS content hashes onchain. It's a multi-tenant registry — each city gets its own namespace. The contract is intentionally minimal (register, snapshot, transfer admin).

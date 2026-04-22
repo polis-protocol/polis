@@ -1,0 +1,42 @@
+---
+title: Categories
+description: "Category queries"
+---
+
+# Categories
+
+## List categories
+
+```graphql
+query {
+  categories {
+    id
+    name
+    slug
+    description
+    color
+    topicCount
+  }
+}
+```
+
+Returns all forum categories configured for the city.
+
+### Response
+
+```json
+{
+  "data": {
+    "categories": [
+      {
+        "id": 1,
+        "name": "General",
+        "slug": "general",
+        "description": "General discussion",
+        "color": "#60A5FA",
+        "topicCount": 42
+      }
+    ]
+  }
+}
+```

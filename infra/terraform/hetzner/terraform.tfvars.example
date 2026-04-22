@@ -1,0 +1,7 @@
+hcloud_token          = "your-hetzner-api-token"
+server_name           = "polis-discourse"
+server_type           = "cx22"
+location              = "nbg1"
+ssh_key_ids           = []
+discourse_hostname    = "forum.example.com"
+discourse_admin_email = "admin@example.com"

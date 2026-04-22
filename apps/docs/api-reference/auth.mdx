@@ -1,0 +1,95 @@
+---
+title: Authentication
+description: "SIWE authentication flow"
+---
+
+# Authentication
+
+Polis uses Sign-In with Ethereum (SIWE / EIP-4361) for wallet-based authentication.
+
+## Flow
+
+### 1. Get nonce
+
+```
+GET /auth/nonce
+```
+
+Response:
+```json
+{ "nonce": "random-nonce-string" }
+```
+
+### 2. Sign message
+
+Client-side, construct and sign a SIWE message:
+
+```typescript
+const message = createSiweMessage({
+  domain: window.location.host,
+  address: walletAddress,
+  statement: 'Sign in to Polis',
+  uri: window.location.origin,
+  version: '1',
+  chainId: 8453, // Base
+  nonce: nonce,
+});
+
+const signature = await signMessage({ message });
+```
+
+### 3. Verify
+
+```
+POST /auth/verify
+Content-Type: application/json
+
+{
+  "message": "...",
+  "signature": "0x..."
+}
+```
+
+Response:
+```json
+{ "ok": true }
+```
+
+A session cookie is set on success.
+
+### 4. Get current user
+
+```
+GET /auth/me
+```
+
+Response:
+```json
+{
+  "id": "uuid",
+  "walletAddress": "0x...",
+  "displayName": "alice.eth"
+}
+```
+
+### 5. Logout
+
+```
+POST /auth/logout
+```
+
+Invalidates the session.
+
+## Using with @polis/react
+
+The `useSIWE()` hook handles this entire flow:
+
+```tsx
+const { signIn, signOut, isLoading } = useSIWE();
+
+// Sign in
+await signIn();
+
+// Sign out
+await signOut();
+```

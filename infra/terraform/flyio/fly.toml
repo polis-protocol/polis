@@ -1,0 +1,32 @@
+# fly.toml — Polis BFF
+# Deploy: fly deploy --config infra/terraform/flyio/fly.toml
+
+app = "polis-bff"
+primary_region = "gru"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[build]
+  dockerfile = "../../infra/docker/Dockerfile.bff"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "4000"
+
+[http_service]
+  internal_port = 4000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.checks]
+    [http_service.checks.health]
+      interval = "10s"
+      timeout = "5s"
+      path = "/health"
+      method = "GET"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

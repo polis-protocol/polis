@@ -1,0 +1,66 @@
+---
+title: "@polis/theme-default"
+description: "Default dark theme tokens for Polis Protocol"
+---
+
+# @polis/theme-default
+
+Provides the baseline dark theme for Polis communities. Pure token export — no JS runtime beyond the object.
+
+## Installation
+
+```bash
+pnpm add @polis/theme-default
+```
+
+## Usage
+
+```typescript
+import themeDefault from '@polis/theme-default';
+import { defineConfig } from '@polis/core';
+
+export default defineConfig({
+  theme: {
+    tokens: themeDefault,
+    overrides: {
+      primary: '#FF6B35', // Override just what you need
+    },
+  },
+});
+```
+
+## Default values
+
+### Colors
+
+| Token | Value | Preview |
+|-------|-------|---------|
+| primary | `#BFFF3F` | Lime green |
+| bg-deep | `#0A0A0F` | Near black |
+| bg-card | `#141420` | Dark purple-gray |
+| bg-input | `#1A1A2E` | Dark blue-gray |
+| text-primary | `#F5F5F5` | Off-white |
+| text-secondary | `#A0A0B0` | Muted gray |
+| border | `#2A2A3E` | Dark border |
+| accent-success | `#34D399` | Green |
+| accent-warning | `#FBBF24` | Amber |
+| accent-error | `#F87171` | Red |
+| overlay | `rgba(0,0,0,0.6)` | Transparent black |
+| shadow | `rgba(0,0,0,0.3)` | Transparent black |
+
+### Fonts
+
+| Token | Value |
+|-------|-------|
+| serif | Instrument Serif |
+| sans | Manrope |
+| mono | JetBrains Mono |
+
+### Border radius
+
+| Token | Value |
+|-------|-------|
+| sm | 4px |
+| md | 8px |
+| lg | 12px |
+| xl | 16px |

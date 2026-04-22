@@ -1,0 +1,73 @@
+---
+title: Theming
+description: "Customize the look and feel of your Polis community"
+---
+
+# Theming
+
+Polis uses CSS custom properties (variables) prefixed with `--polis-` to avoid conflicts with your app's styles.
+
+## Default theme
+
+`@polis/theme-default` provides a dark theme baseline:
+
+```typescript
+import themeDefault from '@polis/theme-default';
+// { colors: { primary: '#BFFF3F', ... }, fonts: { ... }, radius: { ... } }
+```
+
+## Overriding tokens
+
+Pass overrides in your `polis.config.ts`:
+
+```typescript
+export default defineConfig({
+  theme: {
+    tokens: themeDefault,
+    overrides: {
+      primary: '#FF6B35',
+      'bg-deep': '#1A1A2E',
+      serif: 'Playfair Display',
+      sans: 'Inter',
+    },
+  },
+});
+```
+
+## Available tokens
+
+### Colors
+
+| Token | Description | Default |
+|-------|-------------|---------|
+| `primary` | Accent color | `#BFFF3F` |
+| `bg-deep` | Page background | `#0A0A0F` |
+| `bg-card` | Card/surface background | `#141420` |
+| `bg-input` | Input field background | `#1A1A2E` |
+| `text-primary` | Main text color | `#F5F5F5` |
+| `text-secondary` | Muted text color | `#A0A0B0` |
+| `border` | Border color | `#2A2A3E` |
+| `accent-success` | Success state | `#34D399` |
+| `accent-warning` | Warning state | `#FBBF24` |
+| `accent-error` | Error state | `#F87171` |
+
+### Fonts
+
+| Token | Description | Default |
+|-------|-------------|---------|
+| `serif` | Headings | `Instrument Serif` |
+| `sans` | Body text | `Manrope` |
+| `mono` | Code blocks | `JetBrains Mono` |
+
+### Radius
+
+| Token | Default |
+|-------|---------|
+| `sm` | `4px` |
+| `md` | `8px` |
+| `lg` | `12px` |
+| `xl` | `16px` |
+
+## How it works
+
+`PolisProvider` injects a `<style>` tag into the document head with all `--polis-*` variables. Components reference these variables in their styles, so changes propagate instantly.

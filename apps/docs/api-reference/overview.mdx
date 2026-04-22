@@ -1,0 +1,50 @@
+---
+title: API Overview
+description: "GraphQL API provided by @polis/bff"
+---
+
+# API Overview
+
+The Polis BFF exposes a GraphQL API at `POST /graphql`. All queries and mutations are served through this single endpoint.
+
+## Base URL
+
+```
+https://api.yourcity.xyz/graphql
+```
+
+## Authentication
+
+Protected mutations require a valid session cookie. Obtain one via the SIWE flow:
+
+1. `GET /auth/nonce` — Get a random nonce
+2. Sign the SIWE message with your wallet
+3. `POST /auth/verify` — Submit the signature
+4. Session cookie is set automatically
+
+## Error handling
+
+Errors follow the GraphQL error format with typed extensions:
+
+```json
+{
+  "errors": [{
+    "message": "Not found",
+    "extensions": {
+      "code": "NOT_FOUND"
+    }
+  }]
+}
+```
+
+Error codes: `NOT_FOUND`, `UNAUTHORIZED`, `VALIDATION_ERROR`, `RATE_LIMIT`
+
+## Real-time
+
+Subscribe to live updates via SSE:
+
+```
+GET /stream/:channel
+```
+
+Events: `post_created`, `topic_created`

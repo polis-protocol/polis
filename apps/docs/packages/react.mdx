@@ -1,0 +1,63 @@
+---
+title: "@polis/react"
+description: "React components and hooks for Polis community features"
+---
+
+# @polis/react
+
+Framework-agnostic React library. No Next.js imports — works with any React 18+ framework.
+
+## Installation
+
+```bash
+pnpm add @polis/react @polis/core @polis/theme-default
+```
+
+Peer dependencies: `react`, `wagmi`, `viem`
+
+## PolisProvider
+
+Wrap your app with the provider:
+
+```tsx
+import { PolisProvider } from '@polis/react';
+import config from './polis.config';
+
+function App({ children }) {
+  return <PolisProvider config={config}>{children}</PolisProvider>;
+}
+```
+
+## Hooks
+
+| Hook | Returns | Description |
+|------|---------|-------------|
+| `useCategories()` | `{ data, isLoading }` | List all forum categories |
+| `useTopics(slug, categoryId)` | `{ data, isLoading }` | Topics in a category |
+| `useTopic(id)` | `{ data, isLoading }` | Single topic with posts |
+| `useCreateTopic()` | `{ mutate, isPending }` | Create a new topic |
+| `useCreateReply()` | `{ mutate, isPending }` | Reply to a topic |
+| `useMe()` | `{ data, isLoading }` | Current authenticated user |
+| `useSIWE()` | `{ signIn, signOut }` | SIWE authentication flow |
+| `useRealtime()` | void | SSE connection for live updates |
+
+## Components
+
+### Layout
+
+- **`CommunityHero`** — Hero section with city name and stats
+- **`LiveBanner`** — "Live now" indicator (shown when livestream feature enabled)
+- **`CategoryList`** — Grid of category cards
+
+### Content
+
+- **`LatestTopics`** — Recent topics list (`limit` prop)
+- **`CategoryView`** — Category page with topic list + compose FAB
+- **`TopicView`** — Full topic with replies and reply bar
+- **`TopicCard`** — Topic preview card
+- **`PostItem`** — Individual post/reply
+
+### Interactive
+
+- **`ComposeDialog`** — Full-screen compose modal
+- **`ReplyBar`** — Fixed bottom reply input

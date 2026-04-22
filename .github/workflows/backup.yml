@@ -1,0 +1,46 @@
+name: Backup
+
+on:
+  schedule:
+    - cron: "0 3 * * 1" # Every Monday at 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  backup-discourse:
+    name: Discourse Backup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Discourse backup
+        run: |
+          curl -s -X POST \
+            -H "Api-Key: ${{ secrets.DISCOURSE_API_KEY }}" \
+            -H "Api-Username: system" \
+            "${{ secrets.DISCOURSE_URL }}/admin/backups.json" \
+            -F "with_uploads=true"
+        env:
+          DISCOURSE_URL: ${{ secrets.DISCOURSE_URL }}
+          DISCOURSE_API_KEY: ${{ secrets.DISCOURSE_API_KEY }}
+
+      - name: Wait for backup to complete
+        run: sleep 120
+
+      - name: Download latest backup
+        run: |
+          BACKUP=$(curl -s \
+            -H "Api-Key: ${{ secrets.DISCOURSE_API_KEY }}" \
+            -H "Api-Username: system" \
+            "${{ secrets.DISCOURSE_URL }}/admin/backups.json" | jq -r '.[0].filename')
+
+          curl -s -o "discourse-backup-${BACKUP}" \
+            -H "Api-Key: ${{ secrets.DISCOURSE_API_KEY }}" \
+            -H "Api-Username: system" \
+            "${{ secrets.DISCOURSE_URL }}/admin/backups/${BACKUP}"
+
+          echo "backup_file=discourse-backup-${BACKUP}" >> $GITHUB_ENV
+
+      - name: Upload to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: discourse-backup-${{ github.run_id }}
+          path: discourse-backup-*
+          retention-days: 90

@@ -1,0 +1,96 @@
+---
+title: Deployment
+description: "Deploy your Polis-powered city to production"
+---
+
+# Deployment
+
+A Polis deployment consists of three services:
+
+1. **Discourse** — Self-hosted forum backend (Hetzner recommended)
+2. **BFF** — Fastify + GraphQL gateway (Fly.io recommended)
+3. **Your app** — Next.js frontend (Vercel recommended)
+
+## Discourse on Hetzner
+
+We provide Terraform modules for provisioning:
+
+```bash
+cd infra/terraform/hetzner
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars with your values
+terraform init
+terraform plan
+terraform apply
+```
+
+After provisioning, SSH into the server and run the Discourse setup:
+
+```bash
+ssh root@<server-ip>
+cd /var/discourse
+./launcher rebuild app
+```
+
+## BFF on Fly.io
+
+```bash
+# Install flyctl
+curl -L https://fly.io/install.sh | sh
+
+# Deploy
+cd infra/terraform/flyio
+fly deploy --config fly.toml
+
+# Set secrets
+fly secrets set \
+  DATABASE_URL="postgresql://..." \
+  DISCOURSE_URL="https://forum.yourcity.xyz" \
+  DISCOURSE_API_KEY="..." \
+  SESSION_SECRET="..."
+```
+
+Or use Terraform:
+
+```bash
+cd infra/terraform/flyio
+cp terraform.tfvars.example terraform.tfvars
+terraform init && terraform apply
+```
+
+## Frontend on Vercel
+
+```bash
+# Connect to Vercel
+vercel link
+
+# Set environment variables
+vercel env add NEXT_PUBLIC_BFF_URL production
+
+# Deploy
+vercel --prod
+```
+
+## Docker Compose (all-in-one)
+
+For development or small deployments:
+
+```bash
+cd infra/docker
+cp .env.example .env
+docker compose up -d
+```
+
+This starts Postgres, Discourse, and Redis locally.
+
+## Environment variables
+
+| Variable | Service | Required |
+|----------|---------|----------|
+| `DATABASE_URL` | BFF | Yes |
+| `DISCOURSE_URL` | BFF | Yes |
+| `DISCOURSE_API_KEY` | BFF | Yes |
+| `DISCOURSE_API_USERNAME` | BFF | Yes |
+| `SESSION_SECRET` | BFF | Yes |
+| `CORS_ORIGIN` | BFF | Yes |
+| `NEXT_PUBLIC_BFF_URL` | Frontend | Yes |

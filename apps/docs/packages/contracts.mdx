@@ -1,0 +1,53 @@
+---
+title: "@polis/contracts"
+description: "Solidity smart contracts for onchain archival"
+---
+
+# @polis/contracts
+
+Foundry workspace containing the `PolisArchive` smart contract — a multi-tenant registry for onchain community archival.
+
+## PolisArchive.sol
+
+Deployed on **Base mainnet** and **Base Sepolia**.
+
+### Functions
+
+| Function | Access | Description |
+|----------|--------|-------------|
+| `registerCity(slug)` | Anyone | Register a new city, returns `cityId` |
+| `recordSnapshot(cityId, ipfsHash)` | City admin | Record an IPFS content hash |
+| `transferAdmin(cityId, newAdmin)` | City admin | Transfer city admin role |
+| `getCity(cityId)` | View | Get city info |
+| `getLatestSnapshot(cityId)` | View | Get latest snapshot hash |
+| `pause()` / `unpause()` | Owner | Emergency controls |
+
+### Events
+
+- `CityRegistered(cityId, slug, admin)`
+- `SnapshotRecorded(cityId, ipfsHash, timestamp)`
+- `AdminTransferred(cityId, oldAdmin, newAdmin)`
+
+## Development
+
+```bash
+# Build
+forge build
+
+# Test
+forge test -vvv
+
+# Gas report
+forge test --gas-report
+
+# Deploy to testnet
+forge script script/DeployPolisArchive.s.sol --rpc-url base_sepolia --broadcast
+```
+
+## Gas costs
+
+| Operation | Gas |
+|-----------|-----|
+| `registerCity` | ~75,000 |
+| `recordSnapshot` | ~70,000 |
+| `transferAdmin` | ~30,000 |

@@ -1,0 +1,39 @@
+---
+title: Introduction
+description: "Open-source infrastructure for pop-up cities"
+---
+
+# Polis Protocol
+
+Polis is an open-source stack for launching community-driven pop-up cities. It provides forum infrastructure, identity, governance tools, and onchain archival — all configurable per-city.
+
+## What it provides
+
+- **Forum & Discussion** — Discourse-backed community with categories, topics, and real-time updates
+- **Identity** — Sign-In with Ethereum (SIWE) for wallet-based authentication
+- **Theming** — CSS variable-based theme system that adapts to each city's brand
+- **Onchain Archive** — Immutable record of community decisions on Base
+- **Plugin System** — Extend the protocol with custom hooks and schema extensions
+
+## Architecture
+
+Polis follows a two-repo model:
+
+1. **`polis-protocol/polis`** — The protocol monorepo (this repo). Contains all shared packages.
+2. **Your city app** — A Next.js (or any React) app that imports `@polis/react` and connects to a `@polis/bff` instance.
+
+```
+┌─────────────────┐     ┌──────────────┐     ┌───────────┐
+│  Your City App  │────▶│  @polis/bff  │────▶│ Discourse │
+│  (@polis/react) │     │  (Fastify)   │     │ (Docker)  │
+└─────────────────┘     └──────────────┘     └───────────┘
+                              │
+                        ┌─────┴─────┐
+                        │ Postgres  │
+                        │ (Neon)    │
+                        └───────────┘
+```
+
+## First reference implementation
+
+[Ipê Hub](https://ipehub.xyz) — the community platform for Ipê City, a pop-up city in Florianópolis, Brazil.
