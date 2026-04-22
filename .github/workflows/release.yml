@@ -36,10 +36,13 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
 
-      - name: Create release PR or publish
+      - name: Create release PR
         uses: changesets/action@v1
         with:
-          publish: pnpm changeset publish
+          # Publish disabled until NPM_TOKEN secret is configured.
+          # To enable npm publishing, uncomment the `publish` line below and
+          # set the NPM_TOKEN secret in repo settings.
+          # publish: pnpm changeset publish
           title: "chore: version packages"
           commit: "chore: version packages"
         env:
