@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ThemeSchema, injectThemeCSS } from '@polis/core';
+import { ThemeSchema, injectThemeCSS } from '@polisprotocol/core';
 import { defaultTheme } from '../index.js';
 
 describe('defaultTheme', () => {

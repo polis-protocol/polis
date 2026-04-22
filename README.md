@@ -6,13 +6,13 @@ Open-source infrastructure for pop-up cities. Forum, identity, governance, and o
 
 | Package | Description |
 |---------|-------------|
-| `@polis/core` | Types, Zod schemas, Drizzle schema, `defineConfig()` |
-| `@polis/react` | React components + hooks (framework-agnostic) |
-| `@polis/bff` | Fastify + GraphQL Yoga gateway |
-| `@polis/theme-default` | Default dark theme tokens |
-| `@polis/cli` | `create-polis-city` scaffolder |
-| `@polis/contracts` | Solidity contracts (Foundry) |
-| `@polis/web-starter` | Next.js 15 template |
+| `@polisprotocol/core` | Types, Zod schemas, Drizzle schema, `defineConfig()` |
+| `@polisprotocol/react` | React components + hooks (framework-agnostic) |
+| `@polisprotocol/bff` | Fastify + GraphQL Yoga gateway |
+| `@polisprotocol/theme-default` | Default dark theme tokens |
+| `@polisprotocol/cli` | `create-polis-city` scaffolder |
+| `@polisprotocol/contracts` | Solidity contracts (Foundry) |
+| `@polisprotocol/web-starter` | Next.js 15 template |
 
 ## Quick start
 

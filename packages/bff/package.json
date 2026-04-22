@@ -1,5 +1,5 @@
 {
-  "name": "@polis/bff",
+  "name": "@polisprotocol/bff",
   "version": "0.1.0",
   "description": "Fastify + GraphQL Yoga gateway for Polis Protocol",
   "license": "Apache-2.0",
@@ -26,7 +26,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@polis/core": "workspace:*",
+    "@polisprotocol/core": "workspace:*",
     "@fastify/cookie": "^11.0.0",
     "@fastify/cors": "^10.0.0",
     "@fastify/helmet": "^12.0.0",
@@ -40,7 +40,7 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
-    "@polis/tsconfig": "workspace:*",
+    "@polisprotocol/tsconfig": "workspace:*",
     "@types/node": "^22.0.0",
     "tsup": "^8.3.0",
     "tsx": "^4.19.0",

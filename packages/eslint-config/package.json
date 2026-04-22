@@ -1,5 +1,5 @@
 {
-  "name": "@polis/eslint-config",
+  "name": "@polisprotocol/eslint-config",
   "version": "0.0.0",
   "private": true,
   "license": "Apache-2.0",

@@ -8,26 +8,26 @@ description: "How Polis Protocol packages fit together"
 ## Package graph
 
 ```
-@polis/core          ← Foundation: types, Zod schemas, Drizzle schema, defineConfig
+@polisprotocol/core          ← Foundation: types, Zod schemas, Drizzle schema, defineConfig
   ↑
-@polis/theme-default ← Default dark theme tokens
+@polisprotocol/theme-default ← Default dark theme tokens
   ↑
-@polis/bff           ← Fastify + GraphQL Yoga gateway (depends on core)
+@polisprotocol/bff           ← Fastify + GraphQL Yoga gateway (depends on core)
   ↑
-@polis/react         ← React components + hooks (depends on core, peer dep on theme)
+@polisprotocol/react         ← React components + hooks (depends on core, peer dep on theme)
   ↑
-@polis/web-starter   ← Next.js 15 template (uses react + theme-default)
+@polisprotocol/web-starter   ← Next.js 15 template (uses react + theme-default)
   ↑
-@polis/cli           ← create-polis-city scaffolder (clones web-starter via degit)
+@polisprotocol/cli           ← create-polis-city scaffolder (clones web-starter via degit)
 ```
 
-`@polis/contracts` is standalone — Solidity + Foundry, no JS runtime dependency.
+`@polisprotocol/contracts` is standalone — Solidity + Foundry, no JS runtime dependency.
 
 ## Request flow
 
 1. User visits `/community` in the consuming app
-2. `@polis/react` components render, using TanStack Query hooks
-3. Hooks fetch from `@polis/bff` GraphQL endpoint
+2. `@polisprotocol/react` components render, using TanStack Query hooks
+3. Hooks fetch from `@polisprotocol/bff` GraphQL endpoint
 4. BFF translates GraphQL to Discourse API calls
 5. Responses flow back through the same path
 6. SSE channel provides real-time updates for new posts/topics
@@ -43,7 +43,7 @@ The BFF exists so that:
 
 ### Framework-agnostic React
 
-`@polis/react` has zero Next.js imports. It works with any React 18+ framework. Next.js-specific features (routing, SSR) are handled by the consuming app or `@polis/web-starter`.
+`@polisprotocol/react` has zero Next.js imports. It works with any React 18+ framework. Next.js-specific features (routing, SSR) are handled by the consuming app or `@polisprotocol/web-starter`.
 
 ### CSS variable theming
 

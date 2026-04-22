@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@polis/core', '@polis/react', '@polis/theme-default'],
+  transpilePackages: ['@polisprotocol/core', '@polisprotocol/react', '@polisprotocol/theme-default'],
 };
 
 export default nextConfig;

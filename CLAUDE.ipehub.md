@@ -6,7 +6,7 @@
 
 Ipê Hub is the existing Next.js app for **Ipê City** — network state pop-up in Florianópolis, April 23 – May 1, 2026. Already in production at **ipehub.xyz** showing People, Events, Apps.
 
-We're adding a `/community` route as a new feature, consuming `@polis/react` from npm. Built + maintained by **DeegaLabs / Peerbase**.
+We're adding a `/community` route as a new feature, consuming `@polisprotocol/react` from npm. Built + maintained by **DeegaLabs / Peerbase**.
 
 Protocol repo (upstream): [github.com/polis-protocol/polis](https://github.com/polis-protocol/polis)
 
@@ -19,9 +19,9 @@ Protocol repo (upstream): [github.com/polis-protocol/polis](https://github.com/p
 
 ### From Polis (added via npm)
 
-- `@polis/core` — types, schemas, `defineConfig`
-- `@polis/react` — components + hooks for community feature
-- `@polis/theme-default` — baseline theme tokens (overridden via config)
+- `@polisprotocol/core` — types, schemas, `defineConfig`
+- `@polisprotocol/react` — components + hooks for community feature
+- `@polisprotocol/theme-default` — baseline theme tokens (overridden via config)
 
 ### Infrastructure
 
@@ -37,7 +37,7 @@ Read carefully — these prevent regressions:
 - **Existing routes (`/`, `/people`, `/events`, `/apps`) stay as-is.** We're adding, not refactoring.
 - **Don't touch top-level theme tokens.** Polis components scope themselves under `--polis-*` CSS vars. Conflicts are prevented by the prefix.
 - **Don't replace the existing nav system** — add the "Community" link following whatever convention is already there (server component, client component, config file, etc).
-- **Don't fork `@polis/*`.** If something needs fixing upstream, open an issue at `polis-protocol/polis`. If something is genuinely Ipê-specific, add it as a local plugin or component wrapper.
+- **Don't fork `@polisprotocol/*`.** If something needs fixing upstream, open an issue at `polis-protocol/polis`. If something is genuinely Ipê-specific, add it as a local plugin or component wrapper.
 - **The ipehub is the reference implementation** — keep the integration clean enough that other pop-up cities can look at it for guidance.
 
 ## How to integrate
@@ -48,7 +48,7 @@ Three steps:
 
 ```tsx
 // src/app/layout.tsx
-import { PolisProvider } from '@polis/react';
+import { PolisProvider } from '@polisprotocol/react';
 import polisConfig from '@/polis.config';
 
 export default function RootLayout({ children }) {
@@ -70,7 +70,7 @@ export default function RootLayout({ children }) {
 ```tsx
 // src/app/community/page.tsx
 'use client';
-import { CommunityHero, LiveBanner, CategoryList, LatestTopics } from '@polis/react';
+import { CommunityHero, LiveBanner, CategoryList, LatestTopics } from '@polisprotocol/react';
 
 export default function CommunityPage() {
   return (
@@ -87,7 +87,7 @@ export default function CommunityPage() {
 ```tsx
 // src/app/community/c/[slug]/page.tsx
 'use client';
-import { CategoryView } from '@polis/react';
+import { CategoryView } from '@polisprotocol/react';
 import { useRouter } from 'next/navigation';
 
 export default function CategoryPage({ params }) {
@@ -104,7 +104,7 @@ export default function CategoryPage({ params }) {
 ```tsx
 // src/app/community/t/[id]/page.tsx
 'use client';
-import { TopicView } from '@polis/react';
+import { TopicView } from '@polisprotocol/react';
 
 export default function TopicPage({ params }) {
   return <TopicView id={params.id} />;
@@ -115,8 +115,8 @@ export default function TopicPage({ params }) {
 
 ```typescript
 // polis.config.ts
-import { defineConfig } from '@polis/core';
-import themeDefault from '@polis/theme-default';
+import { defineConfig } from '@polisprotocol/core';
+import themeDefault from '@polisprotocol/theme-default';
 
 export default defineConfig({
   city: { name: 'Ipê City', slug: 'ipe', cityId: 1 },
@@ -169,7 +169,7 @@ SENTRY_AUTH_TOKEN=...
 
 ## Development workflow
 
-During protocol dev (before `@polis/react` is published to npm):
+During protocol dev (before `@polisprotocol/react` is published to npm):
 
 ```bash
 # In monorepo
@@ -178,14 +178,14 @@ pnpm link --global
 
 # In this repo
 cd ~/work/ipehub
-pnpm link --global @polis/react @polis/core @polis/theme-default
+pnpm link --global @polisprotocol/react @polisprotocol/core @polisprotocol/theme-default
 pnpm dev
 ```
 
 After v0.1.0 release:
 
 ```bash
-pnpm add @polis/core @polis/react @polis/theme-default
+pnpm add @polisprotocol/core @polisprotocol/react @polisprotocol/theme-default
 pnpm dev
 ```
 

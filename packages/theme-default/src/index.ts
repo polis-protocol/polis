@@ -1,4 +1,4 @@
-import type { Theme } from '@polis/core';
+import type { Theme } from '@polisprotocol/core';
 
 export const defaultTheme: Theme = {
   colors: {

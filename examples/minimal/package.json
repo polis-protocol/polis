@@ -9,15 +9,15 @@
     "start": "next start -p 3001"
   },
   "dependencies": {
-    "@polis/core": "workspace:*",
-    "@polis/react": "workspace:*",
-    "@polis/theme-default": "workspace:*",
+    "@polisprotocol/core": "workspace:*",
+    "@polisprotocol/react": "workspace:*",
+    "@polisprotocol/theme-default": "workspace:*",
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@polis/tsconfig": "workspace:*",
+    "@polisprotocol/tsconfig": "workspace:*",
     "typescript": "^5.7.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0"

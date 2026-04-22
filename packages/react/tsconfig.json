@@ -1,5 +1,5 @@
 {
-  "extends": "@polis/tsconfig/react-library.json",
+  "extends": "@polisprotocol/tsconfig/react-library.json",
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src"

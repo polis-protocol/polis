@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useMemo, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GraphQLClient } from 'graphql-request';
-import { injectThemeCSS } from '@polis/core';
-import type { PolisConfig } from '@polis/core';
+import { injectThemeCSS } from '@polisprotocol/core';
+import type { PolisConfig } from '@polisprotocol/core';
 
 // ── Context ──────────────────────────────────────���──────────
 interface PolisContextValue {

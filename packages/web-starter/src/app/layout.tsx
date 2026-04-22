@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { PolisProvider } from '@polis/react';
+import { PolisProvider } from '@polisprotocol/react';
 import polisConfig from '../../polis.config';
 
 export const metadata: Metadata = {

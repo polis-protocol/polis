@@ -25,7 +25,7 @@ What actually happens.
 
 ## Environment
 
-- Package: `@polis/___` version `___`
+- Package: `@polisprotocol/___` version `___`
 - Node.js: `___`
 - OS: `___`
 

@@ -7,7 +7,7 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
-  external: ['react', 'react-dom', '@polis/core', '@polis/theme-default'],
+  external: ['react', 'react-dom', '@polisprotocol/core', '@polisprotocol/theme-default'],
   banner: {
     js: '"use client";',
   },

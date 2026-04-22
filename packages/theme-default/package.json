@@ -1,5 +1,5 @@
 {
-  "name": "@polis/theme-default",
+  "name": "@polisprotocol/theme-default",
   "version": "0.1.0",
   "description": "Default dark theme tokens for Polis Protocol",
   "license": "Apache-2.0",
@@ -23,10 +23,10 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@polis/core": "workspace:*"
+    "@polisprotocol/core": "workspace:*"
   },
   "devDependencies": {
-    "@polis/tsconfig": "workspace:*",
+    "@polisprotocol/tsconfig": "workspace:*",
     "tsup": "^8.3.0",
     "vitest": "^2.1.0"
   }

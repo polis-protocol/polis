@@ -10,10 +10,10 @@ Dois repos separados, cada um com propósito claro:
 
 | Repo | Visibilidade | Conteúdo | Owner |
 |------|--------------|----------|-------|
-| `polis-protocol/polis` | **Público** (Apache 2.0) | Monorepo do protocolo: `@polis/core`, `@polis/react`, `@polis/bff`, `@polis/cli`, `@polis/theme-default`, `@polis/web-starter`, contracts, docs, `examples/minimal` | Org `polis-protocol` |
-| `deegalabs/ipehub` | App existente (Vercel) | App Next.js do Ipê Hub que já roda em produção (People, Events, Apps). Vai ganhar rota `/community` consumindo `@polis/react` + `@polis/core`. | Org `deegalabs` existente |
+| `polis-protocol/polis` | **Público** (Apache 2.0) | Monorepo do protocolo: `@polisprotocol/core`, `@polisprotocol/react`, `@polisprotocol/bff`, `@polisprotocol/cli`, `@polisprotocol/theme-default`, `@polisprotocol/web-starter`, contracts, docs, `examples/minimal` | Org `polis-protocol` |
+| `deegalabs/ipehub` | App existente (Vercel) | App Next.js do Ipê Hub que já roda em produção (People, Events, Apps). Vai ganhar rota `/community` consumindo `@polisprotocol/react` + `@polisprotocol/core`. | Org `deegalabs` existente |
 
-**Por quê**: protocolo aberto + app cliente separado é o padrão (Vercel/Next.js, Automattic/WordPress, Prisma). O ipehub já existe e funciona — não tem sentido reescrever. Adicionamos `/community` como nova rota consumindo `@polis/react`. O monorepo `polis-protocol/polis` mantém atomic changes nos packages do protocolo. Outras pop-up cities sem app existente usam `npx create-polis-city` (que gera Next.js novo via `@polis/web-starter`).
+**Por quê**: protocolo aberto + app cliente separado é o padrão (Vercel/Next.js, Automattic/WordPress, Prisma). O ipehub já existe e funciona — não tem sentido reescrever. Adicionamos `/community` como nova rota consumindo `@polisprotocol/react`. O monorepo `polis-protocol/polis` mantém atomic changes nos packages do protocolo. Outras pop-up cities sem app existente usam `npx create-polis-city` (que gera Next.js novo via `@polisprotocol/web-starter`).
 
 ---
 
@@ -42,7 +42,7 @@ Bloqueantes. Resolver **hoje** antes de qualquer commit.
 - [ ] **Nome do protocolo**: `Polis Protocol` (recomendado) ou alternativa
 - [ ] **GitHub org (nova)**: `polis-protocol` (check: `gh api /orgs/polis-protocol` deve retornar 404)
 - [ ] **GitHub org (existente)**: `deegalabs` — confirmar ambos Daniel e Dayane têm owner access
-- [ ] **Estratégia ipehub**: integração via rota `/community` no app existente, consumindo `@polis/react` como dep npm. Sem repo novo.
+- [ ] **Estratégia ipehub**: integração via rota `/community` no app existente, consumindo `@polisprotocol/react` como dep npm. Sem repo novo.
 - [ ] **Domínio primário**: `polis-protocol.org` (check com `whois`)
 - [ ] **npm scope**: `@polis` (check: `npm view @polis` retorna 404) — org criada manualmente em npmjs.com/org/create
 - [ ] **Domain Ipê Hub**: confirmar `ipehub.xyz` aponta pra Vercel e ambos têm acesso
@@ -141,7 +141,7 @@ São **dois arquivos** — um pra cada repo. Claude Code lê automaticamente em 
 # CLAUDE.md · Polis Protocol
 
 ## Project context
-Polis Protocol is an open-source stack for pop-up cities. This repo (`polis-protocol/polis`) is the monorepo containing the generic protocol. Reference implementations (like `deegalabs/ipehub`) live in separate repos and consume `@polis/*` as npm dependencies.
+Polis Protocol is an open-source stack for pop-up cities. This repo (`polis-protocol/polis`) is the monorepo containing the generic protocol. Reference implementations (like `deegalabs/ipehub`) live in separate repos and consume `@polisprotocol/*` as npm dependencies.
 
 ## Stack
 - TypeScript (strict mode everywhere)
@@ -156,7 +156,7 @@ Polis Protocol is an open-source stack for pop-up cities. This repo (`polis-prot
 - Vitest (unit), Playwright (e2e), Forge (contracts)
 
 ## Conventions
-- Package names: @polis/<name> for libraries, no scope for apps
+- Package names: @polisprotocol/<name> for libraries, no scope for apps
 - Commits: Conventional Commits (feat:, fix:, chore:, docs:)
 - Branches: main (protected) + feature branches
 - PRs required, squash merge
@@ -188,21 +188,21 @@ Polis Protocol is an open-source stack for pop-up cities. This repo (`polis-prot
 # CLAUDE.md · Ipê Hub
 
 ## Project context
-Ipê Hub is the existing app for Ipê City (network state pop-up in Florianópolis). Already in production showing People, Events, Apps. Adding `/community` route as new feature, consuming `@polis/react` from npm. Built + maintained by DeegaLabs / Peerbase.
+Ipê Hub is the existing app for Ipê City (network state pop-up in Florianópolis). Already in production showing People, Events, Apps. Adding `/community` route as new feature, consuming `@polisprotocol/react` from npm. Built + maintained by DeegaLabs / Peerbase.
 
 Protocol repo: github.com/polis-protocol/polis
 
 ## Stack
 - Next.js 15 (existing app — already in production)
 - TypeScript strict
-- Consumes: @polis/core, @polis/react, @polis/theme-default
+- Consumes: @polisprotocol/core, @polisprotocol/react, @polisprotocol/theme-default
 - BFF consumed via HTTP (api.ipehub.xyz)
 - Tailwind + shadcn/ui (existing) — extend with Polis tokens
 - Wagmi + RainbowKit for wallet (add if not present)
 
 ## Conventions
 - Commits: Conventional Commits
-- Theme: extend @polis/theme-default via overrides, don't fork
+- Theme: extend @polisprotocol/theme-default via overrides, don't fork
 - Plugins: add under `src/plugins/`, register in `polis.config.ts`
 - All Ipê-specific customizations live HERE, not upstream
 
@@ -213,7 +213,7 @@ Protocol repo: github.com/polis-protocol/polis
 - `.env.local` — secrets (not committed)
 
 ## Guardrails
-- Don't patch @polis/* by forking — file issues upstream or extend via plugins
+- Don't patch @polisprotocol/* by forking — file issues upstream or extend via plugins
 - Existing ipehub features (People, Events, Apps) stay as-is — we're adding, not refactoring
 - Keep the `/community` integration clean enough to serve as "how to build on Polis" reference for other cities
 ```
@@ -344,7 +344,7 @@ mkdir -p packages/tsconfig packages/eslint-config
 ```
 
 **Claude Code prompt:**
-> Create two internal packages: `@polis/tsconfig` with three tsconfig variants (`base.json`, `nextjs.json`, `node.json`); and `@polis/eslint-config` with shared ESLint flat config for TypeScript + React + Next. Both packages should be workspace-internal only (`"private": true`), published as pnpm workspaces.
+> Create two internal packages: `@polisprotocol/tsconfig` with three tsconfig variants (`base.json`, `nextjs.json`, `node.json`); and `@polisprotocol/eslint-config` with shared ESLint flat config for TypeScript + React + Next. Both packages should be workspace-internal only (`"private": true`), published as pnpm workspaces.
 
 **DoD:** `packages/tsconfig` e `packages/eslint-config` existem e `pnpm install` resolve.
 
@@ -359,7 +359,7 @@ pnpm changeset init
 ```
 
 **Claude Code prompt:**
-> Configure Changesets in `.changeset/config.json` for a monorepo where packages under `@polis/*` are published to npm. Set `access: public`, `commit: false`, ignore pattern for `apps/*` and `examples/*`. Add GitHub Action `.github/workflows/release.yml` that runs on push to `main`, calls `changesets/action` with publish script `pnpm -r publish --access public`. Require `NPM_TOKEN` and `GITHUB_TOKEN` secrets.
+> Configure Changesets in `.changeset/config.json` for a monorepo where packages under `@polisprotocol/*` are published to npm. Set `access: public`, `commit: false`, ignore pattern for `apps/*` and `examples/*`. Add GitHub Action `.github/workflows/release.yml` that runs on push to `main`, calls `changesets/action` with publish script `pnpm -r publish --access public`. Require `NPM_TOKEN` and `GITHUB_TOKEN` secrets.
 
 **DoD:** `pnpm changeset status` roda OK; workflow visible na UI do repo.
 
@@ -432,29 +432,29 @@ Via Cloudflare dashboard, apontar:
 
 ## Sprint 2 · Days 3-4 (Apr 25-26) · Backend
 
-**Goal:** `@polis/core` + `@polis/bff` funcionando, Discourse self-hosted live, SIWE login end-to-end criando Discourse user.
+**Goal:** `@polisprotocol/core` + `@polisprotocol/bff` funcionando, Discourse self-hosted live, SIWE login end-to-end criando Discourse user.
 
-### T2.1 · @polis/core — types + Zod schemas
+### T2.1 · @polisprotocol/core — types + Zod schemas
 **Time:** 1.5h · **Owner:** Daniel
 
 ```bash
 mkdir -p packages/core/src && cd packages/core
 pnpm init
 pnpm add zod
-pnpm add -D typescript @polis/tsconfig @polis/eslint-config tsup
+pnpm add -D typescript @polisprotocol/tsconfig @polisprotocol/eslint-config tsup
 ```
 
 **Claude Code prompt:**
-> Create `@polis/core` package exporting canonical domain types and Zod schemas. Entities: `City`, `Category`, `User`, `Post`, `Reply`, `Plugin`, `Theme`, `Integration`. Each entity has TypeScript type + Zod schema. Also export `defineConfig` helper that accepts a `PolisConfig` object (city, theme, integrations, features, categories, plugins) and returns it typed. Use tsup to build ESM + CJS + d.ts. Set up `package.json` exports field correctly. Add unit tests in `src/__tests__/` validating schemas with valid + invalid inputs using Vitest.
+> Create `@polisprotocol/core` package exporting canonical domain types and Zod schemas. Entities: `City`, `Category`, `User`, `Post`, `Reply`, `Plugin`, `Theme`, `Integration`. Each entity has TypeScript type + Zod schema. Also export `defineConfig` helper that accepts a `PolisConfig` object (city, theme, integrations, features, categories, plugins) and returns it typed. Use tsup to build ESM + CJS + d.ts. Set up `package.json` exports field correctly. Add unit tests in `src/__tests__/` validating schemas with valid + invalid inputs using Vitest.
 
 **DoD:**
 - [ ] `pnpm build` produces `dist/`
 - [ ] `pnpm test` passes
-- [ ] `import { defineConfig } from "@polis/core"` works from another package
+- [ ] `import { defineConfig } from "@polisprotocol/core"` works from another package
 
 ---
 
-### T2.2 · @polis/core — Drizzle schema
+### T2.2 · @polisprotocol/core — Drizzle schema
 **Deps:** T2.1 · **Time:** 1h · **Owner:** Daniel
 
 ```bash
@@ -477,7 +477,7 @@ pnpm add -D drizzle-kit
 
 ---
 
-### T2.3 · @polis/bff — Fastify + plugin system
+### T2.3 · @polisprotocol/bff — Fastify + plugin system
 **Deps:** T2.1 · **Time:** 1.5h · **Owner:** Dayane
 
 ```bash
@@ -485,12 +485,12 @@ mkdir -p packages/bff/src && cd packages/bff
 pnpm init
 pnpm add fastify @fastify/cors @fastify/cookie @fastify/helmet @fastify/rate-limit
 pnpm add graphql graphql-yoga @pothos/core @pothos/plugin-scope-auth
-pnpm add @polis/core pino pino-pretty
+pnpm add @polisprotocol/core pino pino-pretty
 pnpm add -D tsx @types/node
 ```
 
 **Claude Code prompt:**
-> Create `@polis/bff` Fastify server with GraphQL Yoga + Pothos. Entry point at `src/server.ts`. Register plugins: helmet, cors (configurable), rate-limit (100 req/min per IP), cookie. Load config from `polis.config.ts` via `defineConfig`. Mount GraphQL Yoga at `/graphql`. Setup Pothos SchemaBuilder with plugin slots for future extension. Add healthcheck at `/health` returning status + version. Environment validation via Zod (`DATABASE_URL`, `REDIS_URL`, `DISCOURSE_URL`, `DISCOURSE_API_KEY`, `SESSION_SECRET`, `SIWE_DOMAIN`, `NODE_ENV`). Export `createServer(config)` factory so tests can instantiate without listening. Add dev script with tsx watch.
+> Create `@polisprotocol/bff` Fastify server with GraphQL Yoga + Pothos. Entry point at `src/server.ts`. Register plugins: helmet, cors (configurable), rate-limit (100 req/min per IP), cookie. Load config from `polis.config.ts` via `defineConfig`. Mount GraphQL Yoga at `/graphql`. Setup Pothos SchemaBuilder with plugin slots for future extension. Add healthcheck at `/health` returning status + version. Environment validation via Zod (`DATABASE_URL`, `REDIS_URL`, `DISCOURSE_URL`, `DISCOURSE_API_KEY`, `SESSION_SECRET`, `SIWE_DOMAIN`, `NODE_ENV`). Export `createServer(config)` factory so tests can instantiate without listening. Add dev script with tsx watch.
 
 **DoD:**
 - [ ] `pnpm dev` sobe em `localhost:4000`
@@ -499,7 +499,7 @@ pnpm add -D tsx @types/node
 
 ---
 
-### T2.4 · @polis/bff — Discourse client adapter
+### T2.4 · @polisprotocol/bff — Discourse client adapter
 **Deps:** T2.3 · **Time:** 2h · **Owner:** Dayane
 
 **Claude Code prompt:**
@@ -520,7 +520,7 @@ pnpm add -D tsx @types/node
 
 ---
 
-### T2.5 · @polis/bff — Auth via SIWE + Lucia
+### T2.5 · @polisprotocol/bff — Auth via SIWE + Lucia
 **Deps:** T2.3, T2.2 · **Time:** 2.5h · **Owner:** Daniel
 
 ```bash
@@ -544,7 +544,7 @@ pnpm add lucia siwe viem @lucia-auth/adapter-drizzle
 
 ---
 
-### T2.6 · @polis/bff — First GraphQL resolvers
+### T2.6 · @polisprotocol/bff — First GraphQL resolvers
 **Deps:** T2.4, T2.5 · **Time:** 1.5h · **Owner:** Dayane
 
 **Claude Code prompt:**
@@ -636,25 +636,25 @@ Manual + `scripts/smoke-test.ts`:
 
 ## Sprint 3 · Days 5-6 (Apr 27-28) · Frontend
 
-**Goal:** `@polis/react` library publicada (components + hooks), integrada no ipehub existente como rota `/community`, live em produção.
+**Goal:** `@polisprotocol/react` library publicada (components + hooks), integrada no ipehub existente como rota `/community`, live em produção.
 
-### T3.1 · @polis/react package scaffold
+### T3.1 · @polisprotocol/react package scaffold
 **Time:** 1.5h · **Owner:** Daniel
 
 ```bash
 mkdir -p packages/react/src && cd packages/react
 pnpm init
 pnpm add react react-dom @tanstack/react-query graphql-request siwe wagmi viem @rainbow-me/rainbowkit
-pnpm add @polis/core
-pnpm add -D typescript @polis/tsconfig @polis/eslint-config tsup react@18 @types/react vitest @testing-library/react jsdom
+pnpm add @polisprotocol/core
+pnpm add -D typescript @polisprotocol/tsconfig @polisprotocol/eslint-config tsup react@18 @types/react vitest @testing-library/react jsdom
 ```
 
 **Claude Code prompt:**
-> Create `@polis/react` package — framework-agnostic React library exporting components + hooks for Polis Community feature. Structure:
+> Create `@polisprotocol/react` package — framework-agnostic React library exporting components + hooks for Polis Community feature. Structure:
 > - `src/components/` — UI components (CategoryList, TopicCard, TopicView, ComposeDialog, ReplyBar, LiveBanner, CommunityHero)
 > - `src/hooks/` — data hooks (useCategories, useTopic, useTopics, useCreateTopic, useCreateReply, useSIWE, useRealtime)
 > - `src/providers/` — `<PolisProvider config={...}>` wrapper that sets up GQL client + WagmiProvider + QueryClientProvider internally
-> - `src/styles/` — theme CSS variables (consumed via `@polis/theme-default`)
+> - `src/styles/` — theme CSS variables (consumed via `@polisprotocol/theme-default`)
 > - `src/index.ts` — barrel export
 > 
 > Build with tsup (ESM + CJS + d.ts), peer deps: react ^18 || ^19, wagmi ^2, viem ^2. Make sure components don't import next/* or any framework-specific code — they must work in any React app. Add Vitest + @testing-library/react setup with jsdom. Configure `package.json` exports field correctly.
@@ -662,7 +662,7 @@ pnpm add -D typescript @polis/tsconfig @polis/eslint-config tsup react@18 @types
 **DoD:**
 - [ ] `pnpm build` produces dist/
 - [ ] `pnpm test` passes
-- [ ] `import { CategoryList } from "@polis/react"` works from a fresh app
+- [ ] `import { CategoryList } from "@polisprotocol/react"` works from a fresh app
 
 ---
 
@@ -699,7 +699,7 @@ pnpm add -D typescript @polis/tsconfig @polis/eslint-config tsup react@18 @types
 > - `<LatestTopics limit={4}>` — recent topics across categories
 > - `<TopicCard>` — single topic preview (used by LatestTopics + CategoryView)
 > 
-> Match the visual from `docs/reference/ipe-forum-mockup.html` (commit the mockup HTML to docs/reference/ first). Use Tailwind utilities — assume host app has Tailwind 3+ configured. Theme via CSS variables consumed from `@polis/theme-default`. Loading skeletons via shimmer animation. No shadcn dependency — keep components self-contained.
+> Match the visual from `docs/reference/ipe-forum-mockup.html` (commit the mockup HTML to docs/reference/ first). Use Tailwind utilities — assume host app has Tailwind 3+ configured. Theme via CSS variables consumed from `@polisprotocol/theme-default`. Loading skeletons via shimmer animation. No shadcn dependency — keep components self-contained.
 
 **DoD:**
 - [ ] Components render in Storybook (add Storybook setup)
@@ -769,10 +769,10 @@ pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-link @tiptap/extens
 
 **Claude Code prompt:**
 > Implement theme system:
-> 1. In `@polis/core/src/theme.ts`, define `Theme` type with tokens: colors (primary, bg-deep, bg-card, text-primary, text-secondary, accent-cyan, accent-amber, accent-violet, accent-pink, accent-orange, accent-blue, accent-red), fonts (serif, sans, mono), radius (sm, md, lg, xl).
-> 2. Create `@polis/theme-default` package exporting baseline dark theme + a `injectThemeCSS(theme)` helper that returns a CSS string of variables.
-> 3. In `@polis/react`, the `<PolisProvider>` injects theme CSS variables via `<style>` tag in head, consumed by all components via `var(--polis-*)`.
-> 4. Tailwind plugin `@polis/tailwind-preset` (lightweight) maps `--polis-*` vars to Tailwind theme keys for utilities like `bg-polis-card`, `text-polis-primary`.
+> 1. In `@polisprotocol/core/src/theme.ts`, define `Theme` type with tokens: colors (primary, bg-deep, bg-card, text-primary, text-secondary, accent-cyan, accent-amber, accent-violet, accent-pink, accent-orange, accent-blue, accent-red), fonts (serif, sans, mono), radius (sm, md, lg, xl).
+> 2. Create `@polisprotocol/theme-default` package exporting baseline dark theme + a `injectThemeCSS(theme)` helper that returns a CSS string of variables.
+> 3. In `@polisprotocol/react`, the `<PolisProvider>` injects theme CSS variables via `<style>` tag in head, consumed by all components via `var(--polis-*)`.
+> 4. Tailwind plugin `@polisprotocol/tailwind-preset` (lightweight) maps `--polis-*` vars to Tailwind theme keys for utilities like `bg-polis-card`, `text-polis-primary`.
 
 **DoD:**
 - [ ] Mudar tema na config → Storybook reflete imediatamente
@@ -780,7 +780,7 @@ pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-link @tiptap/extens
 
 ---
 
-### T3.8 · Integrar `@polis/react` no ipehub existente
+### T3.8 · Integrar `@polisprotocol/react` no ipehub existente
 **Deps:** T3.7 · **Time:** 2h · **Owner:** Daniel
 
 O ipehub já está em produção. **Não criar repo novo** — adicionar feature como rota nova no app existente.
@@ -788,21 +788,21 @@ O ipehub já está em produção. **Não criar repo novo** — adicionar feature
 ```bash
 cd ~/work/ipehub  # ou onde quer que o repo já clonado esteja
 
-# Durante dev local, usa pnpm link pra trabalhar contra @polis/react sem publicar
+# Durante dev local, usa pnpm link pra trabalhar contra @polisprotocol/react sem publicar
 cd ~/work/polis-protocol/polis/packages/react
 pnpm link --global
 cd ~/work/ipehub
-pnpm link --global @polis/react @polis/core @polis/theme-default
+pnpm link --global @polisprotocol/react @polisprotocol/core @polisprotocol/theme-default
 
-# Quando @polis/* estiver publicado em npm:
-# pnpm add @polis/core @polis/react @polis/theme-default
+# Quando @polisprotocol/* estiver publicado em npm:
+# pnpm add @polisprotocol/core @polisprotocol/react @polisprotocol/theme-default
 ```
 
 Criar `~/work/ipehub/polis.config.ts`:
 
 ```typescript
-import { defineConfig } from '@polis/core';
-import themeDefault from '@polis/theme-default';
+import { defineConfig } from '@polisprotocol/core';
+import themeDefault from '@polisprotocol/theme-default';
 
 export default defineConfig({
   city: { name: 'Ipê City', slug: 'ipe', cityId: 1 },
@@ -834,8 +834,8 @@ export default defineConfig({
 
 **Claude Code prompt** (rodar dentro de `~/work/ipehub`):
 > Add Polis Community feature to this existing Next.js app. Don't refactor existing routes (People, Events, Apps). Steps:
-> 1. Wrap root layout (`src/app/layout.tsx`) with `<PolisProvider config={polisConfig}>` (import from `@polis/react`). Keep existing providers around it.
-> 2. Create `src/app/community/page.tsx` rendering `<CommunityHero>` + `<LiveBanner>` + `<CategoryList>` + `<LatestTopics>` from `@polis/react`. Pass any layout/spacing as wrapper divs.
+> 1. Wrap root layout (`src/app/layout.tsx`) with `<PolisProvider config={polisConfig}>` (import from `@polisprotocol/react`). Keep existing providers around it.
+> 2. Create `src/app/community/page.tsx` rendering `<CommunityHero>` + `<LiveBanner>` + `<CategoryList>` + `<LatestTopics>` from `@polisprotocol/react`. Pass any layout/spacing as wrapper divs.
 > 3. Create `src/app/community/c/[slug]/page.tsx` rendering `<CategoryView slug={params.slug}>`.
 > 4. Create `src/app/community/t/[id]/page.tsx` rendering `<TopicView id={params.id}>`.
 > 5. Add nav link "Community" alongside existing People/Events/Apps in main nav.
@@ -864,7 +864,7 @@ vercel env add LUMA_EVENT_ID <id> production
 vercel env add ARCHIVE_CONTRACT 0x... production
 vercel env add DISCOURSE_SSO_SECRET <secret> production
 # Commit e push
-git add . && git commit -m "feat(community): integrate @polis/react"
+git add . && git commit -m "feat(community): integrate @polisprotocol/react"
 git push origin main
 # Vercel deploy auto
 ```
@@ -879,7 +879,7 @@ git push origin main
 ---
 
 **Sprint 3 End-of-day 6 check:**
-- ✅ `@polis/react` publicado (ou linkado localmente) com components + hooks
+- ✅ `@polisprotocol/react` publicado (ou linkado localmente) com components + hooks
 - ✅ ipehub existente integrado, rota `/community` live em produção
 - ✅ Auth wallet → post end-to-end
 - ✅ Real-time funcionando
@@ -892,7 +892,7 @@ git push origin main
 
 **Goal:** Contract em Base, backup pipeline rodando, plugin system operacional.
 
-### T4.1 · @polis/contracts — Foundry setup
+### T4.1 · @polisprotocol/contracts — Foundry setup
 **Time:** 1h · **Owner:** Daniel
 
 ```bash
@@ -997,7 +997,7 @@ age-keygen -o ~/.polis-backup.key
 >   hooks: { onPostCreated?: async (ctx, post) => {} }  
 > })  
 > ```  
-> Plugins listed in `polis.config.ts` under `plugins` array. BFF reads config at startup, dynamically imports each plugin, registers its schema contributions with the Pothos builder, and wires hooks into the relevant flows. Provide `definePlugin` helper + `PluginContext` type in `@polis/core`.
+> Plugins listed in `polis.config.ts` under `plugins` array. BFF reads config at startup, dynamically imports each plugin, registers its schema contributions with the Pothos builder, and wires hooks into the relevant flows. Provide `definePlugin` helper + `PluginContext` type in `@polisprotocol/core`.
 
 **DoD:** Plugin toy "hello-world" adicionado a config estende GraphQL com query `hello`.
 
@@ -1070,28 +1070,28 @@ Lista de issues found durante sprints anteriores. Trabalhar em paralelo. Scope f
 
 **Goal:** CLI funcional, docs completa, release v0.1.0, launch público.
 
-### T5.1 · @polis/web-starter scaffold
+### T5.1 · @polisprotocol/web-starter scaffold
 **Time:** 1.5h · **Owner:** Daniel
 
-Next.js 15 starter já configurado com `@polis/react`, Wagmi, Tailwind, shadcn — usado pelo CLI pra novas cidades. Ipê não usa isso (já tem app), mas Cabin/Vitalia/futuras sim.
+Next.js 15 starter já configurado com `@polisprotocol/react`, Wagmi, Tailwind, shadcn — usado pelo CLI pra novas cidades. Ipê não usa isso (já tem app), mas Cabin/Vitalia/futuras sim.
 
 ```bash
 mkdir -p packages/web-starter && cd packages/web-starter
 pnpm dlx create-next-app@latest . --ts --tailwind --app --eslint --src-dir --import-alias "@/*" --use-pnpm
-pnpm add @polis/core @polis/react @polis/theme-default
+pnpm add @polisprotocol/core @polisprotocol/react @polisprotocol/theme-default
 pnpm add wagmi viem @rainbow-me/rainbowkit @tanstack/react-query
 ```
 
 **Claude Code prompt:**
-> Configure `@polis/web-starter` as a Next.js 15 template that the CLI clones. Structure:
+> Configure `@polisprotocol/web-starter` as a Next.js 15 template that the CLI clones. Structure:
 > - `src/app/layout.tsx` — wraps children in `<PolisProvider>`, loads polis.config.ts
 > - `src/app/page.tsx` — landing page with placeholder "Welcome to {city.name}" + link to /community
-> - `src/app/community/page.tsx` — renders `<CommunityHero>` + `<CategoryList>` + `<LatestTopics>` from `@polis/react`
+> - `src/app/community/page.tsx` — renders `<CommunityHero>` + `<CategoryList>` + `<LatestTopics>` from `@polisprotocol/react`
 > - `src/app/community/c/[slug]/page.tsx` — renders `<CategoryView>`
 > - `src/app/community/t/[id]/page.tsx` — renders `<TopicView>`
 > - `polis.config.ts.template` — config with `{{city.name}}`, `{{city.slug}}` placeholders for CLI to replace
 > - `.env.local.example` — required env vars
-> - `tailwind.config.ts` — extends `@polis/tailwind-preset`
+> - `tailwind.config.ts` — extends `@polisprotocol/tailwind-preset`
 > - `README.md.template` — onboarding for new city operators
 > 
 > Mark as `private: true` in package.json — this isn't published to npm; it's cloned via degit by the CLI.
@@ -1102,7 +1102,7 @@ pnpm add wagmi viem @rainbow-me/rainbowkit @tanstack/react-query
 
 ---
 
-### T5.2 · @polis/cli scaffolder
+### T5.2 · @polisprotocol/cli scaffolder
 **Deps:** T5.1 · **Time:** 2h · **Owner:** Daniel
 
 ```bash
@@ -1117,7 +1117,7 @@ pnpm add citty @clack/prompts degit chalk
 > 2. Prompt for theme (default, custom)
 > 3. Prompt for features (siwe, farcaster, livestream)
 > 4. Prompt for deploy target (local dev, hetzner, fly+vercel)
-> 5. Clone `@polis/web-starter` template via degit (`degit polis-protocol/polis/packages/web-starter`)
+> 5. Clone `@polisprotocol/web-starter` template via degit (`degit polis-protocol/polis/packages/web-starter`)
 > 6. Replace placeholders ({{city.name}}, {{city.slug}}) with user input via simple sed-like substitution
 > 7. Generate `polis.config.ts` from prompts
 > 8. Generate `.env.local` with placeholders
@@ -1134,7 +1134,7 @@ pnpm add citty @clack/prompts degit chalk
 ### T5.3 · examples/minimal
 **Deps:** T5.1 · **Time:** 1h · **Owner:** Dayane
 
-Único example dentro do monorepo — instância **completa** que usa `@polis/web-starter` como base, deployable. Mostra como uma cidade rodaria do zero. Serve como sanity check do template + lugar pra contributors testarem mudanças no `@polis/react` antes de virar PR.
+Único example dentro do monorepo — instância **completa** que usa `@polisprotocol/web-starter` como base, deployable. Mostra como uma cidade rodaria do zero. Serve como sanity check do template + lugar pra contributors testarem mudanças no `@polisprotocol/react` antes de virar PR.
 
 Cria `examples/minimal/`:
 - Clona `packages/web-starter` como ponto de partida
@@ -1143,7 +1143,7 @@ Cria `examples/minimal/`:
 - `docker-compose.yml` com Discourse + Postgres + Redis local
 - README com 3 comandos pra subir tudo
 
-**Nota**: o ipehub real **não vive aqui** — ele é o app existente em `deegalabs/ipehub` que importa `@polis/react`. Esse `examples/minimal` é só pedagógico.
+**Nota**: o ipehub real **não vive aqui** — ele é o app existente em `deegalabs/ipehub` que importa `@polisprotocol/react`. Esse `examples/minimal` é só pedagógico.
 
 **DoD:** `cd examples/minimal && docker compose up && pnpm dev` sobe stack completo local em <5min, navegável.
 
@@ -1217,7 +1217,7 @@ Template geral: o problema (pop-up cities fragmentadas) + a solução (Polis) + 
 ```bash
 # create changesets for all pkgs
 pnpm changeset
-# select all @polis/* packages, minor bump
+# select all @polisprotocol/* packages, minor bump
 pnpm changeset version
 git add -A && git commit -m "chore: release v0.1.0"
 git tag v0.1.0
@@ -1230,7 +1230,7 @@ git push origin main --tags
 
 **DoD:**
 - [ ] Tag v0.1.0 visível no GitHub
-- [ ] Pacotes @polis/* publicados em npmjs.com
+- [ ] Pacotes @polisprotocol/* publicados em npmjs.com
 - [ ] CHANGELOG.md atualizado
 
 ---
@@ -1256,8 +1256,8 @@ Definition of Done v0.1.0 — todos os itens abaixo antes de declarar "done":
 - [ ] Repo público, Apache 2.0
 - [ ] CI workflows passando (ci.yml, contracts.yml, release.yml)
 - [ ] Tag `v0.1.0` criada
-- [ ] Pacotes npm publicados: `@polis/core`, `@polis/react`, `@polis/bff`, `@polis/cli`, `@polis/theme-default`, `create-polis-city`
-- [ ] `@polis/web-starter` versionado (não publicado em npm — clonado via degit pelo CLI)
+- [ ] Pacotes npm publicados: `@polisprotocol/core`, `@polisprotocol/react`, `@polisprotocol/bff`, `@polisprotocol/cli`, `@polisprotocol/theme-default`, `create-polis-city`
+- [ ] `@polisprotocol/web-starter` versionado (não publicado em npm — clonado via degit pelo CLI)
 - [ ] Docker image `ghcr.io/polis-protocol/bff:0.1.0` disponível
 - [ ] `docs.polis-protocol.org` live com Quickstart testado por terceiro
 - [ ] Contrato `PolisArchive` verificado em basescan
@@ -1267,7 +1267,7 @@ Definition of Done v0.1.0 — todos os itens abaixo antes de declarar "done":
 
 **Ipê Hub (`deegalabs/ipehub`) — app existente**
 - [ ] Rota `/community` adicionada sem regressão em People/Events/Apps
-- [ ] Consome `@polis/react` + `@polis/core` + `@polis/theme-default` via npm (não link local)
+- [ ] Consome `@polisprotocol/react` + `@polisprotocol/core` + `@polisprotocol/theme-default` via npm (não link local)
 - [ ] `ipehub.xyz/community` live e estável por 24h
 - [ ] `forum.ipehub.xyz` live (Discourse)
 - [ ] `api.ipehub.xyz` healthy (BFF Fly.io)
@@ -1284,7 +1284,7 @@ Definition of Done v0.1.0 — todos os itens abaixo antes de declarar "done":
 Prompts reutilizáveis. Colar no Claude Code trocando `[BRACKETS]`.
 
 ### Criar novo package
-> Create a new package `@polis/[NAME]` in `packages/[NAME]/`. Use `@polis/tsconfig` for base config. Use `tsup` for build (ESM + CJS + d.ts). Add Vitest for testing. Export public API from `src/index.ts`. Add README with purpose + usage example.
+> Create a new package `@polisprotocol/[NAME]` in `packages/[NAME]/`. Use `@polisprotocol/tsconfig` for base config. Use `tsup` for build (ESM + CJS + d.ts). Add Vitest for testing. Export public API from `src/index.ts`. Add README with purpose + usage example.
 
 ### Criar novo GraphQL resolver
 > In `packages/bff/src/graphql/[DOMAIN].ts`, add Pothos resolver for [OPERATION]. Use DataLoader for any N+1 risk. Validate input with Zod. Call DiscourseClient for data fetching. Add integration test with MSW mocks.

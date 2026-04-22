@@ -1,5 +1,5 @@
 {
-  "name": "@polis/contracts",
+  "name": "@polisprotocol/contracts",
   "version": "0.1.0",
   "private": true,
   "description": "Solidity smart contracts for Polis Protocol",

@@ -2,8 +2,8 @@ import React from 'react';
 import { describe, it, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { PolisProvider, usePolisConfig } from '../providers/PolisProvider.js';
-import type { PolisConfig } from '@polis/core';
-import { defaultTheme } from '@polis/theme-default';
+import type { PolisConfig } from '@polisprotocol/core';
+import { defaultTheme } from '@polisprotocol/theme-default';
 
 const testConfig: PolisConfig = {
   city: { name: 'Test City', slug: 'test' },

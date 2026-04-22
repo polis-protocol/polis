@@ -6,8 +6,8 @@ import { PolisProvider } from '../providers/PolisProvider.js';
 import { LiveBanner } from '../components/LiveBanner.js';
 import { TopicCard } from '../components/TopicCard.js';
 import { PostItem } from '../components/PostItem.js';
-import type { PolisConfig } from '@polis/core';
-import { defaultTheme } from '@polis/theme-default';
+import type { PolisConfig } from '@polisprotocol/core';
+import { defaultTheme } from '@polisprotocol/theme-default';
 
 const testConfig: PolisConfig = {
   city: { name: 'Test City', slug: 'test' },

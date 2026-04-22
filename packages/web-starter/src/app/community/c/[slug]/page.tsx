@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryView } from '@polis/react';
+import { CategoryView } from '@polisprotocol/react';
 import { useRouter, useParams } from 'next/navigation';
 
 export default function CategoryPage() {

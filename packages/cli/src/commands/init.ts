@@ -103,8 +103,8 @@ export const initCommand = defineCommand({
       writeFileSync(configPath, configContent);
     } else {
       // Generate config from scratch
-      const configContent = `import { defineConfig } from '@polis/core';
-import themeDefault from '@polis/theme-default';
+      const configContent = `import { defineConfig } from '@polisprotocol/core';
+import themeDefault from '@polisprotocol/theme-default';
 
 export default defineConfig({
   city: { name: '${cityName}', slug: '${citySlug}' },

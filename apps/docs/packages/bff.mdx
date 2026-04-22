@@ -1,9 +1,9 @@
 ---
-title: "@polis/bff"
+title: "@polisprotocol/bff"
 description: "Fastify + GraphQL backend-for-frontend gateway"
 ---
 
-# @polis/bff
+# @polisprotocol/bff
 
 The BFF (Backend-for-Frontend) is a Fastify server that proxies Discourse API calls behind a typed GraphQL interface.
 
@@ -11,7 +11,7 @@ The BFF (Backend-for-Frontend) is a Fastify server that proxies Discourse API ca
 
 ```bash
 # Development
-pnpm --filter @polis/bff dev
+pnpm --filter @polisprotocol/bff dev
 
 # Production (Docker)
 docker build -f infra/docker/Dockerfile.bff -t polis-bff .

@@ -29,8 +29,8 @@ The CLI will prompt you for:
 Edit `polis.config.ts` at the project root:
 
 ```typescript
-import { defineConfig } from '@polis/core';
-import themeDefault from '@polis/theme-default';
+import { defineConfig } from '@polisprotocol/core';
+import themeDefault from '@polisprotocol/theme-default';
 
 export default defineConfig({
   city: { name: 'My City', slug: 'my-city', cityId: 1 },
@@ -57,10 +57,10 @@ export default defineConfig({
 
 ```bash
 # Start Postgres + Discourse
-docker compose -f node_modules/@polis/bff/docker-compose.yml up -d
+docker compose -f node_modules/@polisprotocol/bff/docker-compose.yml up -d
 
 # Start the BFF
-pnpm --filter @polis/bff dev
+pnpm --filter @polisprotocol/bff dev
 
 # Start your app
 pnpm dev

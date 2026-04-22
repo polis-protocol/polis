@@ -4,7 +4,7 @@
 
 ## Project context
 
-Polis Protocol is an open-source stack for pop-up cities. This monorepo (`polis-protocol/polis`) contains the generic protocol. Reference implementations live in separate repos — the first one is `deegalabs/ipehub` (the existing Ipê Hub app, integrated via the `@polis/react` library).
+Polis Protocol is an open-source stack for pop-up cities. This monorepo (`polis-protocol/polis`) contains the generic protocol. Reference implementations live in separate repos — the first one is `deegalabs/ipehub` (the existing Ipê Hub app, integrated via the `@polisprotocol/react` library).
 
 Maintained by **DeegaLabs** (Daniel Gorgonha + Dayane Gorgonha). Apache 2.0.
 
@@ -14,7 +14,7 @@ Target: `v0.1.0` shipped by **May 1, 2026**, coinciding with Ipê City 2026 clos
 
 - **TypeScript** strict mode everywhere
 - **pnpm** workspaces + **Turborepo**
-- **Next.js 15** (App Router, RSC) — used inside `@polis/web-starter` only, not in consuming apps
+- **Next.js 15** (App Router, RSC) — used inside `@polisprotocol/web-starter` only, not in consuming apps
 - **Fastify** + **GraphQL Yoga** + **Pothos** (code-first schema) — the BFF
 - **Drizzle ORM** + **Postgres** (Neon) — User Registry
 - **Lucia v3** for sessions, **SIWE** (EIP-4361) for wallet sign-in
@@ -53,13 +53,13 @@ infra/
 
 Critical to keep the boundaries clean — these are the contracts:
 
-- **`@polis/core`** — zero runtime dependencies beyond Zod + Drizzle. Types, schemas, `defineConfig()`. Must work in Node + browser.
-- **`@polis/react`** — components + hooks only. NO Next.js imports. NO framework code. Peer deps: react ^18 || ^19, wagmi ^2, viem ^2. Must be importable from any React app (Next, Vite, Remix, Astro).
-- **`@polis/bff`** — Fastify server. Deployable as Docker image. Loads `polis.config.ts` at startup. Plugin system via Pothos plugin loader.
-- **`@polis/theme-default`** — pure CSS-variable theme tokens. No JS runtime — just exports the `Theme` object.
-- **`@polis/web-starter`** — Next.js 15 app template. Private (not published). Cloned via degit by the CLI.
-- **`@polis/cli`** — published as `create-polis-city`. Thin wrapper around Clack + degit + string replacement.
-- **`@polis/contracts`** — Solidity contracts + Foundry tests. No JS runtime code here.
+- **`@polisprotocol/core`** — zero runtime dependencies beyond Zod + Drizzle. Types, schemas, `defineConfig()`. Must work in Node + browser.
+- **`@polisprotocol/react`** — components + hooks only. NO Next.js imports. NO framework code. Peer deps: react ^18 || ^19, wagmi ^2, viem ^2. Must be importable from any React app (Next, Vite, Remix, Astro).
+- **`@polisprotocol/bff`** — Fastify server. Deployable as Docker image. Loads `polis.config.ts` at startup. Plugin system via Pothos plugin loader.
+- **`@polisprotocol/theme-default`** — pure CSS-variable theme tokens. No JS runtime — just exports the `Theme` object.
+- **`@polisprotocol/web-starter`** — Next.js 15 app template. Private (not published). Cloned via degit by the CLI.
+- **`@polisprotocol/cli`** — published as `create-polis-city`. Thin wrapper around Clack + degit + string replacement.
+- **`@polisprotocol/contracts`** — Solidity contracts + Foundry tests. No JS runtime code here.
 
 ## Conventions
 
@@ -70,7 +70,7 @@ Critical to keep the boundaries clean — these are the contracts:
 - Prefer `const` over `let`. No `var`.
 - Explicit return types on exported functions.
 - File naming: `kebab-case.ts` for files, `PascalCase` for React component default exports.
-- Import order: node built-ins → external → internal (`@polis/*`) → relative.
+- Import order: node built-ins → external → internal (`@polisprotocol/*`) → relative.
 
 ### Commits & PRs
 
@@ -98,7 +98,7 @@ Critical to keep the boundaries clean — these are the contracts:
 
 ### Config & secrets
 
-- `polis.config.ts` loaded via `defineConfig()` from `@polis/core`. All fields validated at runtime by Zod.
+- `polis.config.ts` loaded via `defineConfig()` from `@polisprotocol/core`. All fields validated at runtime by Zod.
 - Env vars validated at BFF startup — fail fast if missing.
 - Secrets via Doppler in prod, `.env.local` in dev. `.env.example` always committed up-to-date.
 - Never commit real keys. Never invent them.
@@ -107,7 +107,7 @@ Critical to keep the boundaries clean — these are the contracts:
 
 - **This is a PROTOCOL repo.** Nothing Ipê-specific goes here. Ipê-only code lives in `deegalabs/ipehub`.
 - **No new deps without asking.** Each dependency is a maintenance burden.
-- **No framework coupling in `@polis/react`.** If you need Next.js features, make it a prop or a separate package.
+- **No framework coupling in `@polisprotocol/react`.** If you need Next.js features, make it a prop or a separate package.
 - **Don't break the build.** Run `pnpm lint && pnpm typecheck && pnpm test` before every commit.
 - **Migrations are forever.** When writing a Drizzle migration, include both up and down.
 - **Plugin system stays minimal.** No god-plugins. A plugin extends the schema, it doesn't rewrite the core.
@@ -119,7 +119,7 @@ Critical to keep the boundaries clean — these are the contracts:
 
 1. Define Zod schema in `packages/core/src/schema.ts`
 2. Add Drizzle table in `packages/core/src/db/schema.ts`
-3. Generate migration: `pnpm --filter @polis/core db:generate`
+3. Generate migration: `pnpm --filter @polisprotocol/core db:generate`
 4. Add GraphQL type + resolvers in `packages/bff/src/graphql/<entity>.ts`
 5. Add React hook wrapping the query/mutation in `packages/react/src/hooks/`
 6. Add component (if UI needed) in `packages/react/src/components/`
@@ -128,10 +128,10 @@ Critical to keep the boundaries clean — these are the contracts:
 
 ### Adding a new route to consuming app
 
-Consuming app (e.g. ipehub) uses `@polis/react` directly:
+Consuming app (e.g. ipehub) uses `@polisprotocol/react` directly:
 
 ```tsx
-import { TopicView } from '@polis/react';
+import { TopicView } from '@polisprotocol/react';
 export default function Page({ params }) {
   return <TopicView id={params.id} />;
 }

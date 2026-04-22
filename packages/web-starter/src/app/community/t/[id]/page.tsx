@@ -1,6 +1,6 @@
 'use client';
 
-import { TopicView } from '@polis/react';
+import { TopicView } from '@polisprotocol/react';
 import { useRouter, useParams } from 'next/navigation';
 
 export default function TopicPage() {

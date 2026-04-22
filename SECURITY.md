@@ -23,10 +23,10 @@ You will receive a response within 48 hours. We will work with you to understand
 
 The following are in scope:
 
-- `@polis/core` — schema validation, config parsing
-- `@polis/bff` — authentication, authorization, API security
-- `@polis/contracts` — smart contract vulnerabilities
-- `@polis/react` — XSS, injection vectors
+- `@polisprotocol/core` — schema validation, config parsing
+- `@polisprotocol/bff` — authentication, authorization, API security
+- `@polisprotocol/contracts` — smart contract vulnerabilities
+- `@polisprotocol/react` — XSS, injection vectors
 
 ## Smart contracts
 

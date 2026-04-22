@@ -1,5 +1,5 @@
-import { defineConfig } from '@polis/core';
-import themeDefault from '@polis/theme-default';
+import { defineConfig } from '@polisprotocol/core';
+import themeDefault from '@polisprotocol/theme-default';
 
 export default defineConfig({
   city: { name: 'My City', slug: 'my-city' },

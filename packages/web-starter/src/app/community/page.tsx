@@ -1,6 +1,6 @@
 'use client';
 
-import { CommunityHero, LiveBanner, CategoryList, LatestTopics } from '@polis/react';
+import { CommunityHero, LiveBanner, CategoryList, LatestTopics } from '@polisprotocol/react';
 import { useRouter } from 'next/navigation';
 
 export default function CommunityPage() {

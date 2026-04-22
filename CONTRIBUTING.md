@@ -39,9 +39,9 @@ pnpm typecheck      # Type check
 
 ## Package boundaries
 
-- `@polis/core` — zero runtime deps beyond Zod + Drizzle
-- `@polis/react` — no Next.js imports, framework-agnostic
-- `@polis/bff` — deployable Fastify server
+- `@polisprotocol/core` — zero runtime deps beyond Zod + Drizzle
+- `@polisprotocol/react` — no Next.js imports, framework-agnostic
+- `@polisprotocol/bff` — deployable Fastify server
 - Nothing Ipe-specific goes in this repo
 
 ## License

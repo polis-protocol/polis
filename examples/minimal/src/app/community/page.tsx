@@ -1,6 +1,6 @@
 'use client';
 
-import { CommunityHero, CategoryList, LatestTopics } from '@polis/react';
+import { CommunityHero, CategoryList, LatestTopics } from '@polisprotocol/react';
 
 export default function CommunityPage() {
   return (

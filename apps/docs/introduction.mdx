@@ -20,12 +20,12 @@ Polis is an open-source stack for launching community-driven pop-up cities. It p
 Polis follows a two-repo model:
 
 1. **`polis-protocol/polis`** — The protocol monorepo (this repo). Contains all shared packages.
-2. **Your city app** — A Next.js (or any React) app that imports `@polis/react` and connects to a `@polis/bff` instance.
+2. **Your city app** — A Next.js (or any React) app that imports `@polisprotocol/react` and connects to a `@polisprotocol/bff` instance.
 
 ```
 ┌─────────────────┐     ┌──────────────┐     ┌───────────┐
-│  Your City App  │────▶│  @polis/bff  │────▶│ Discourse │
-│  (@polis/react) │     │  (Fastify)   │     │ (Docker)  │
+│  Your City App  │────▶│  @polisprotocol/bff  │────▶│ Discourse │
+│  (@polisprotocol/react) │     │  (Fastify)   │     │ (Docker)  │
 └─────────────────┘     └──────────────┘     └───────────┘
                               │
                         ┌─────┴─────┐

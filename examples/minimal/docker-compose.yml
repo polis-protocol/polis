@@ -1,5 +1,5 @@
 # Minimal local development stack
-# Start everything: docker compose up -d && pnpm --filter @polis/bff dev && pnpm --filter polis-minimal-example dev
+# Start everything: docker compose up -d && pnpm --filter @polisprotocol/bff dev && pnpm --filter polis-minimal-example dev
 
 services:
   postgres:

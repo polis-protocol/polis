@@ -10,7 +10,7 @@ Polis supports a lightweight plugin system for extending the BFF schema and addi
 ## Defining a plugin
 
 ```typescript
-import { definePlugin } from '@polis/core';
+import { definePlugin } from '@polisprotocol/core';
 import { z } from 'zod';
 
 export const analyticsPlugin = definePlugin({
@@ -42,7 +42,7 @@ export const analyticsPlugin = definePlugin({
 Add plugins to your `polis.config.ts`:
 
 ```typescript
-import { defineConfig } from '@polis/core';
+import { defineConfig } from '@polisprotocol/core';
 import { analyticsPlugin } from './plugins/analytics';
 
 export default defineConfig({

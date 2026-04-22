@@ -1,5 +1,5 @@
 {
-  "name": "@polis/core",
+  "name": "@polisprotocol/core",
   "version": "0.1.0",
   "description": "Types, schemas, and configuration for Polis Protocol",
   "license": "Apache-2.0",
@@ -38,7 +38,7 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
-    "@polis/tsconfig": "workspace:*",
+    "@polisprotocol/tsconfig": "workspace:*",
     "drizzle-kit": "^0.30.0",
     "tsup": "^8.3.0",
     "vitest": "^2.1.0"

@@ -1,16 +1,16 @@
 ---
-title: "@polis/core"
+title: "@polisprotocol/core"
 description: "Types, schemas, and configuration for Polis Protocol"
 ---
 
-# @polis/core
+# @polisprotocol/core
 
 The foundation package. Zero runtime dependencies beyond Zod and Drizzle. Works in Node and browser.
 
 ## Installation
 
 ```bash
-pnpm add @polis/core
+pnpm add @polisprotocol/core
 ```
 
 ## defineConfig
@@ -18,7 +18,7 @@ pnpm add @polis/core
 Creates a validated Polis configuration:
 
 ```typescript
-import { defineConfig } from '@polis/core';
+import { defineConfig } from '@polisprotocol/core';
 
 export default defineConfig({
   city: { name: 'My City', slug: 'my-city', cityId: 1 },
@@ -48,7 +48,7 @@ All entity schemas are exported as Zod objects:
 
 ## Database schema
 
-Drizzle tables exported from `@polis/core/db`:
+Drizzle tables exported from `@polisprotocol/core/db`:
 
 - `cities` — City registry
 - `users` — User profiles with wallet addresses
@@ -57,7 +57,7 @@ Drizzle tables exported from `@polis/core/db`:
 ## Theme utilities
 
 ```typescript
-import { injectThemeCSS } from '@polis/core';
+import { injectThemeCSS } from '@polisprotocol/core';
 
 const css = injectThemeCSS(theme, 'polis');
 // :root { --polis-primary: #BFFF3F; ... }
@@ -66,7 +66,7 @@ const css = injectThemeCSS(theme, 'polis');
 ## Plugin helpers
 
 ```typescript
-import { definePlugin } from '@polis/core';
+import { definePlugin } from '@polisprotocol/core';
 
 const myPlugin = definePlugin({
   name: 'my-plugin',
