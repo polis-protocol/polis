@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/07/schema",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "outDir": "dist",
+    "rootDir": "src"
+  }
+}
