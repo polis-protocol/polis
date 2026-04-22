@@ -1,39 +1,51 @@
 ---
 title: Introduction
-description: "Open-source infrastructure for pop-up cities"
+description: "Open-source coordination layer for pop-up cities"
 ---
 
 # Polis Protocol
 
-Polis is an open-source stack for launching community-driven pop-up cities. It provides forum infrastructure, identity, governance tools, and onchain archival — all configurable per-city.
+Polis is an open-source **coordination layer** for pop-up cities (Zuzalu, Edge City, Cabin, Vitalia, Ipê City, and whoever comes next). Not a monolithic community app — a set of composable React components and a typed backend that connect your city to best-of-category community primitives.
 
 ## What it provides
 
-- **Forum & Discussion** — Discourse-backed community with categories, topics, and real-time updates
-- **Identity** — Sign-In with Ethereum (SIWE) for wallet-based authentication
-- **Theming** — CSS variable-based theme system that adapts to each city's brand
-- **Onchain Archive** — Immutable record of community decisions on Base
-- **Plugin System** — Extend the protocol with custom hooks and schema extensions
+- **Identity** — Sign-In with Ethereum (SIWE), with pluggable onboarding (Privy for email/social/embedded wallets, or RainbowKit for crypto-native flows)
+- **Theming** — CSS variable-based theme system that adapts to each city's brand without conflicting with your existing design system
+- **Forum** — Discourse-backed community with categories, topics, real-time updates
+- **Chat** — channels sync messaging via Discourse Chat
+- **Pulse** — microblog consumed from Farcaster (channel-based)
+- **Livestream integration** — three HTTP contracts to plug any livestream product into the community home
+- **Onchain archive** — immutable record of community snapshots on Base via `PolisArchive.sol`
+- **Plugin system** — extend the BFF's GraphQL schema with custom hooks
 
-## Architecture
+## Philosophy
 
-Polis follows a two-repo model:
+Polis does not try to replace Discourse, Farcaster, Matrix, or Snapshot. Each of these has a mature team and ecosystem. Polis is the **glue** — identity, theming, and a coherent UI surface that brings them together for a pop-up city's needs.
 
-1. **`polis-protocol/polis`** — The protocol monorepo (this repo). Contains all shared packages.
-2. **Your city app** — A Next.js (or any React) app that imports `@polisprotocol/react` and connects to a `@polisprotocol/bff` instance.
+## Two-repo model
+
+1. **`polis-protocol/polis`** — the protocol monorepo (this repo). All shared `@polisprotocol/*` packages.
+2. **Your city app** — a Next.js (or any React) app that imports `@polisprotocol/react` from npm and connects to a `@polisprotocol/bff` instance.
 
 ```
-┌─────────────────┐     ┌──────────────┐     ┌───────────┐
-│  Your City App  │────▶│  @polisprotocol/bff  │────▶│ Discourse │
-│  (@polisprotocol/react) │     │  (Fastify)   │     │ (Docker)  │
-└─────────────────┘     └──────────────┘     └───────────┘
-                              │
-                        ┌─────┴─────┐
-                        │ Postgres  │
-                        │ (Neon)    │
-                        └───────────┘
+┌─────────────────────┐       ┌─────────────────┐       ┌───────────┐
+│  Your City App      │──────▶│ @polisprotocol/ │──────▶│ Discourse │
+│  (@polisprotocol/   │  HTTP │ bff (Fastify)   │  HTTP │ (Docker)  │
+│   react)            │       │                 │       └───────────┘
+└──────┬──────────────┘       └────────┬────────┘
+       │                               │
+       ▼                               ▼
+┌─────────────┐                ┌──────────────┐
+│ Farcaster   │                │ Postgres     │
+│ (Neynar)    │                │ (Neon)       │
+└─────────────┘                └──────────────┘
 ```
 
 ## First reference implementation
 
-[Ipê Hub](https://ipehub.xyz) — the community platform for Ipê City, a pop-up city in Florianópolis, Brazil.
+[Ipê Hub](https://ipehub.xyz) — community platform for **Ipê City 2026**, a pop-up city in Florianópolis, Brazil (Apr 23 – May 1, 2026). Maintained by [DeegaLabs](https://deegalabs.com.br).
+
+## Next
+
+- [Quickstart](/quickstart) — spin up a new city in under 5 minutes
+- [Architecture](/architecture) — how the packages fit together

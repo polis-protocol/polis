@@ -4,11 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project context
 
-Polis Protocol is an open-source stack for pop-up cities (Zuzalu, Edge City, Cabin, Vitalia, etc.). This directory is the planning and bootstrapping workspace. The actual monorepo (`polis-protocol/polis`) is bootstrapped via `bootstrap-polis.sh` to `~/work/polis/`. The first reference implementation is **Ipê Hub** (`deegalabs/ipehub`), an existing Next.js app at ipehub.xyz that integrates via `@polisprotocol/react`.
+Polis Protocol is an open-source **coordination layer** for pop-up cities (Zuzalu, Edge City, Cabin, Vitalia, Ipê, etc.). Not a monolithic community app — a composable set of React components, a typed BFF, and a pluggable auth model that wires each city to its choice of community primitives (forum, chat, microblog, DMs, governance, livestream).
+
+The first reference implementation is **Ipê Hub** (`deegalabs/ipehub`), an existing Next.js app at ipehub.xyz that integrates via `@polisprotocol/react`.
 
 Maintained by **DeegaLabs** (Daniel Gorgonha + Dayane Gorgonha). Apache 2.0 license.
 
 Target: `v0.1.0` by **May 1, 2026** (Ipê City 2026 closing day).
+
+**Architecture mental model**: federation of primitives, not bundling. When a new feature/tool appears (Firefly, Privy, XMTP, a new livestream stack), ask first: _is this a primitive the Polis consumes, or something the Polis implements?_ 90% of the time it's the first — plug via `polis.config.ts`, render via an optional React component. See `docs/DECISIONS.md` ADRs 011–013.
 
 ## Key files in this directory
 

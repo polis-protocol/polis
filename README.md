@@ -1,6 +1,6 @@
 # Polis Protocol
 
-Open-source infrastructure for pop-up cities. Forum, identity, governance, and onchain archival — configurable per city.
+Open-source **coordination layer** for pop-up cities. Not a monolithic community app — a composable set of React components, a typed BFF, and a pluggable auth model that wires each city to best-of-category community primitives (forum, chat, microblog, DMs, governance, livestream, onchain archive).
 
 Target: `v0.1.0` shipped by **May 1, 2026**, coinciding with Ipê City 2026 closing day.
 

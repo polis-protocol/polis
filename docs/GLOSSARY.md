@@ -45,6 +45,21 @@ One-way streaming protocol over HTTP. Used for real-time forum updates.
 **Degit**
 Tool for cloning a Git repo as a plain directory (no history). Used by the CLI to scaffold new cities from `@polisprotocol/web-starter`.
 
+**Community primitive**
+A single sovereign system that provides one community capability (forum, chat, microblog, DMs, etc.). Polis composes primitives, it doesn't rebuild them. See ADR-011.
+
+**Coordination layer**
+Polis's role in the stack: it provides identity, theming, and UI that unifies multiple community primitives into one coherent experience for residents. It is not itself a forum/chat/social network.
+
+**Primitive federation**
+The architectural pattern where each community capability (forum, chat, pulse, livestream) runs as an independent system with its own data/ops, and Polis connects them through config and HTTP contracts instead of code.
+
+**Pluggable auth connector**
+The model where the client-side auth library (Privy, RainbowKit, custom) is chosen by the consumer app via config, while the BFF stays SIWE-only. See ADR-013.
+
+**Privy**
+Commercial auth + embedded wallet provider. Creates a wallet automatically when a user signs in with email / Google / SMS, enabling non-crypto-native onboarding. Integrates with wagmi. Used by Farcaster/Warpcast since 2024-2025. Recommended for cities that expect non-crypto residents.
+
 ## Blockchain
 
 **PolisArchive**
@@ -116,5 +131,11 @@ The Next.js app at [ipehub.xyz](https://ipehub.xyz) that serves as the community
 **OpenMic**
 A live-streamed Ipê category where residents share ideas over a scheduled slot. The `LiveBanner` component surfaces the current live session.
 
+**Ipê Livestream**
+Separate DeegaLabs product for livestream orchestration (OpenMic, workshops, talks). Self-hosted stack: Traefik, MediaMTX, VDO.Ninja, Owncast, PeerTube federation, WebAuthn admin, onchain VOD integrity via Guardian. Integrates with Polis via three HTTP contracts (see ADR-012). Not part of this monorepo.
+
+**Ipê Guardian**
+Onchain governance and attestation contract for Ipê residents/participation. Issues citizen-score attestations based on event participation. Livestream VODs get content-hash commitments here for archive integrity.
+
 **DeegaLabs**
-Company maintaining Polis Protocol and Ipê Hub. Run by Daniel Gorgonha and Dayane Gorgonha.
+Company maintaining Polis Protocol, Ipê Hub, Ipê Livestream, and Stellar SpendGuard. Run by Daniel Gorgonha and Dayane Gorgonha.

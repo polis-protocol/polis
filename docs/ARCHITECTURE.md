@@ -1,38 +1,54 @@
 # Architecture
 
+## Mental model: coordination layer, not super-app
+
+Polis Protocol is **not** a monolithic community app. It is a **coordination layer** that provides:
+
+1. A shared identity primitive (SIWE)
+2. A shared theming system (`--polis-*` CSS variables)
+3. A composable set of React components that each consume a **separate best-of-breed system**
+4. A BFF that unifies those systems behind a typed GraphQL surface
+
+Each "community primitive" (forum, chat, microblog, DMs, governance, livestream) is a separate sovereign system. The consumer app picks which primitives to surface. See [ADR-011](./DECISIONS.md) for the rationale.
+
 ## System overview
 
-Polis Protocol is a three-tier stack:
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                       Consumer App (ipehub, etc.)                   │
+│                        @polisprotocol/react                         │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌───────┐  │
+│  │ Forum    │  │ Chat     │  │ Pulse    │  │ Live     │  │ ...   │  │
+│  │ (Topic,  │  │ Channels │  │ Feed     │  │ Banner   │  │       │  │
+│  │  Reply)  │  │          │  │          │  │          │  │       │  │
+│  └────┬─────┘  └─────┬────┘  └────┬─────┘  └────┬─────┘  └───┬───┘  │
+└───────┼──────────────┼────────────┼─────────────┼────────────┼──────┘
+        │              │            │             │            │
+        │       ┌──────┴──────────  HTTP  ─────────┼────────────┘
+        │       │                   │              │
+   ┌────▼───────▼────┐  ┌───────────▼───┐   ┌──────▼──────────┐
+   │ @polisprotocol  │  │   Farcaster   │   │ Ipê Livestream  │
+   │ bff (Fastify)   │  │  (via Neynar) │   │ (separate prod) │
+   └────┬────────────┘  └───────────────┘   └─────────────────┘
+        │
+   ┌────┴───────────────────────────────────────────────┐
+   │                                                    │
+   ▼                         ▼                          ▼
+┌──────────┐  ┌──────────────────┐  ┌────────────────────────┐
+│Discourse │  │Postgres (Neon)   │  │Base (L2)               │
+│forum +   │  │user registry,    │  │PolisArchive.sol,       │
+│chat pl.  │  │Lucia sessions    │  │IPFS snapshot refs      │
+└──────────┘  └──────────────────┘  └────────────────────────┘
+      │
+      ▼
+┌──────────────────┐
+│Redis (Upstash)   │
+│SIWE nonces,      │
+│SSE pub/sub       │
+└──────────────────┘
+```
 
-```
-┌─────────────────────┐      ┌──────────────────┐      ┌──────────────────┐
-│  Consumer app       │─────▶│  @polisprotocol/ │─────▶│  Discourse       │
-│  (Next.js, Vite,    │ HTTP │  bff             │ HTTP │  (self-hosted)   │
-│   Remix, etc.)      │◀─────│  (Fastify)       │◀─────│  forum backend   │
-│  @polisprotocol/    │      │                  │      │                  │
-│  react              │      └──────────────────┘      └──────────────────┘
-└─────────────────────┘              │
-                                     ▼
-                          ┌──────────────────────┐
-                          │  Postgres (Neon)     │
-                          │  user registry +     │
-                          │  Lucia sessions      │
-                          └──────────────────────┘
-                                     │
-                                     ▼
-                          ┌──────────────────────┐
-                          │  Redis (Upstash)     │
-                          │  SIWE nonces,        │
-                          │  SSE pub/sub         │
-                          └──────────────────────┘
-                                     │
-                                     ▼
-                          ┌──────────────────────┐
-                          │  Base (L2)           │
-                          │  PolisArchive.sol    │
-                          │  IPFS snapshot refs  │
-                          └──────────────────────┘
-```
+The BFF is the gateway for things that need a server (Discourse, Postgres, Base reads). Other primitives (Farcaster, Livestream) are consumed directly from `@polisprotocol/react` components against their own public APIs.
 
 ## Package graph
 
@@ -176,6 +192,60 @@ Browser            useSIWE hook           /auth/nonce       /auth/verify      Lu
 | Real-time events | Redis pub/sub, SSE stream | per-connection |
 | Client cache | TanStack Query in browser | session |
 | Community snapshots | IPFS (content-addressed) + onchain ref | permanent |
+
+## Community primitives
+
+Each capability is its own system, chosen as best-of-category. Polis composes — it doesn't rebuild.
+
+| Primitive | Implementation | Consumed via |
+|-----------|---------------|--------------|
+| **Forum** (async, threaded) | Discourse (self-hosted) | BFF → GraphQL |
+| **Chat** (channels, sync) | Discourse Chat plugin (v0.1) → Matrix (future) | BFF → GraphQL |
+| **Microblog / Pulse** | Farcaster channel-based | Neynar API, direct from `@polisprotocol/react` |
+| **DMs** | XMTP (opt-in) | XMTP SDK, direct from consumer app |
+| **Governance / Voting** | Snapshot or Tally | Via wagmi, direct from consumer app |
+| **Social profiles** | Farcaster / Lens / ENS | SIWE-addressable identity |
+| **Livestream** | Ipê Livestream (separate product) | 3 HTTP surfaces, see below |
+| **Onchain archive** | PolisArchive.sol on Base | viem, via consumer app or BFF |
+
+Each appears as an optional component in `@polisprotocol/react`. The consumer's `polis.config.ts` declares which integrations are enabled.
+
+## Integration surfaces
+
+### Livestream (Ipê Livestream) — see [ADR-012](./DECISIONS.md)
+
+Livestream is a **separate product** with its own repo, domain (`tv.yourcity.xyz`), and ops. Polis integrates via three HTTP contracts:
+
+1. **Live status** — `GET /api/status` → `{ live, title, viewerCount, startedAt }`.
+   `<LiveBanner>` polls this; renders "live now" or nothing.
+
+2. **Post-VOD webhook** — Livestream POSTs to BFF when stream ends:
+   ```
+   POST /webhooks/livestream/vod-finalized
+   { title, vodUrl, durationSec, transcript?, summary?, keyMoments?, categorySlug }
+   ```
+   BFF creates a topic in the referenced category (default `openmic`) linking to the VOD.
+
+3. **Timestamp deep-link** — URL convention: `/community/t/{topicId}#t=14m32s` auto-seeks the embedded player. Bidirectional (livestream chat can reference `#t42`).
+
+### Auth (Privy / RainbowKit / custom) — see [ADR-013](./DECISIONS.md)
+
+BFF stays **SIWE-only** — it verifies EIP-4361 signatures and doesn't care which wallet created them. Client-side auth connector is pluggable via `polis.config.ts`:
+
+```typescript
+integrations: {
+  auth: {
+    provider: 'privy',  // or 'rainbowkit' or 'custom'
+    appId: '<privy-app-id>',
+    loginMethods: ['email', 'google', 'farcaster', 'wallet'],
+    embeddedWallets: 'users-without-wallets',
+  },
+}
+```
+
+- **`rainbowkit`** — default for crypto-native cities. Pure wagmi + RainbowKit.
+- **`privy`** — radically simpler onboarding: email/social login auto-creates an embedded wallet that signs SIWE. Used by Ipê Hub.
+- **`custom`** — consumer provides their own wagmi connector.
 
 ## Key design decisions
 

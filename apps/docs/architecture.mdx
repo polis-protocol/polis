@@ -5,50 +5,97 @@ description: "How Polis Protocol packages fit together"
 
 # Architecture
 
+Polis Protocol is a **coordination layer**, not a monolithic community app. It provides shared identity (SIWE), theming, and a composable set of React components — each one consuming a separate best-of-breed system.
+
+## Community primitives
+
+Rather than rebuild forum, chat, microblog, DMs, governance, and livestream from scratch, Polis composes existing category winners:
+
+| Primitive | Implementation |
+|-----------|---------------|
+| Forum (async, threaded) | Discourse |
+| Chat (channels, sync) | Discourse Chat plugin |
+| Microblog / Pulse | Farcaster (via Neynar) |
+| DMs | XMTP (opt-in) |
+| Governance | Snapshot / Tally |
+| Social profiles | Farcaster / Lens / ENS |
+| Livestream | Separate product (3 HTTP contracts) |
+| Onchain archive | `PolisArchive.sol` on Base |
+
+Consumer apps declare which integrations they want in `polis.config.ts`. Each primitive shows up as an optional component in `@polisprotocol/react`.
+
 ## Package graph
 
 ```
-@polisprotocol/core          ← Foundation: types, Zod schemas, Drizzle schema, defineConfig
+@polisprotocol/core          ← Types, Zod schemas, Drizzle schema, defineConfig
   ↑
 @polisprotocol/theme-default ← Default dark theme tokens
   ↑
 @polisprotocol/bff           ← Fastify + GraphQL Yoga gateway (depends on core)
   ↑
-@polisprotocol/react         ← React components + hooks (depends on core, peer dep on theme)
+@polisprotocol/react         ← Components + hooks (depends on core, peer dep on theme)
   ↑
 @polisprotocol/web-starter   ← Next.js 15 template (uses react + theme-default)
   ↑
-@polisprotocol/cli           ← create-polis-city scaffolder (clones web-starter via degit)
+create-polis-city            ← CLI scaffolder (clones web-starter via degit)
 ```
 
 `@polisprotocol/contracts` is standalone — Solidity + Foundry, no JS runtime dependency.
 
-## Request flow
+## Request flow (forum)
 
 1. User visits `/community` in the consuming app
-2. `@polisprotocol/react` components render, using TanStack Query hooks
+2. `@polisprotocol/react` components render via TanStack Query hooks
 3. Hooks fetch from `@polisprotocol/bff` GraphQL endpoint
 4. BFF translates GraphQL to Discourse API calls
 5. Responses flow back through the same path
 6. SSE channel provides real-time updates for new posts/topics
 
+For Farcaster (pulse feed), the component calls Neynar directly — no BFF hop needed.
+
+## Auth: pluggable connector, SIWE-only BFF
+
+BFF verifies EIP-4361 signatures regardless of which wallet produced them. Client-side connector is chosen via config:
+
+```typescript
+integrations: {
+  auth: {
+    provider: 'privy',  // or 'rainbowkit' | 'custom'
+    appId: '<privy-app-id>',
+    loginMethods: ['email', 'google', 'farcaster', 'wallet'],
+    embeddedWallets: 'users-without-wallets',
+  },
+}
+```
+
+- **Privy** — email/social login auto-creates an embedded wallet; zero fiction for non-crypto residents.
+- **RainbowKit** — standard wagmi flow for crypto-native cities.
+- **Custom** — bring your own wagmi connector.
+
+## Livestream integration
+
+Livestream (if you use one, like Ipê Livestream) is a **separate product**. Polis integrates via three HTTP contracts:
+
+1. **Live status** — `GET /api/status` — consumed by `<LiveBanner>`.
+2. **Post-VOD webhook** — when stream ends, livestream POSTs metadata to BFF, which creates a topic automatically.
+3. **Timestamp deep-link** — `/community/t/{id}#t=14m32s` auto-seeks embedded player.
+
 ## Key design decisions
 
-### BFF pattern (Backend-for-Frontend)
+### BFF pattern
 
-The BFF exists so that:
-- Consuming apps never call Discourse directly (API key stays server-side)
+- Consumer apps never call Discourse directly (API key stays server-side)
 - GraphQL provides a typed, stable API regardless of Discourse version
 - Rate limiting, auth, and caching happen in one place
 
 ### Framework-agnostic React
 
-`@polisprotocol/react` has zero Next.js imports. It works with any React 18+ framework. Next.js-specific features (routing, SSR) are handled by the consuming app or `@polisprotocol/web-starter`.
+`@polisprotocol/react` has zero Next.js imports. Works with any React 18+ framework. Next.js features are handled by the consumer app.
 
 ### CSS variable theming
 
-Themes are injected as `--polis-*` CSS custom properties. This avoids conflicts with the consuming app's design system and enables runtime theme switching.
+Themes are injected as `--polis-*` custom properties. Avoids conflicts with the consumer app's design system and enables runtime theme switching.
 
-### Onchain archive
+### Onchain archive, not onchain forum
 
-`PolisArchive.sol` records IPFS content hashes onchain. It's a multi-tenant registry — each city gets its own namespace. The contract is intentionally minimal (register, snapshot, transfer admin).
+Day-to-day forum runs on Discourse for UX. Critical artifacts (governance decisions, end-of-event snapshots) are pinned to IPFS and their content hashes recorded on Base via `PolisArchive.sol`. This is "credibly neutral + exit rights" — not full decentralization, but the community can survive if we disappear.
