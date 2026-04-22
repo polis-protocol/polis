@@ -2,6 +2,8 @@
 
 Open-source infrastructure for pop-up cities. Forum, identity, governance, and onchain archival — configurable per city.
 
+Target: `v0.1.0` shipped by **May 1, 2026**, coinciding with Ipê City 2026 closing day.
+
 ## Packages
 
 | Package | Description |
@@ -10,9 +12,9 @@ Open-source infrastructure for pop-up cities. Forum, identity, governance, and o
 | `@polisprotocol/react` | React components + hooks (framework-agnostic) |
 | `@polisprotocol/bff` | Fastify + GraphQL Yoga gateway |
 | `@polisprotocol/theme-default` | Default dark theme tokens |
-| `@polisprotocol/cli` | `create-polis-city` scaffolder |
-| `@polisprotocol/contracts` | Solidity contracts (Foundry) |
-| `@polisprotocol/web-starter` | Next.js 15 template |
+| `@polisprotocol/contracts` | Solidity contracts (Foundry) on Base |
+| `create-polis-city` | CLI scaffolder (unscoped, npm `create-*` convention) |
+| `@polisprotocol/web-starter` | Next.js 15 template (private, cloned via degit) |
 
 ## Quick start
 
@@ -21,6 +23,8 @@ pnpm create polis-city my-city
 cd my-city
 pnpm dev
 ```
+
+See [`docs/ENVIRONMENT.md`](./docs/ENVIRONMENT.md) for the full local setup.
 
 ## Development
 
@@ -32,16 +36,33 @@ pnpm build
 pnpm test
 ```
 
+## Documentation
+
+- **Contributor docs:** [`docs/`](./docs/) — architecture, decisions, deployment, testing
+- **User docs:** [docs.polis-protocol.org](https://docs.polis-protocol.org) (source: [`apps/docs/`](./apps/docs/))
+- **Quickstart:** [`docs/ENVIRONMENT.md`](./docs/ENVIRONMENT.md)
+- **Architecture:** [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
+- **Deployment:** [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md)
+- **Decisions (ADRs):** [`docs/DECISIONS.md`](./docs/DECISIONS.md)
+
 ## Stack
 
-TypeScript, pnpm workspaces, Turborepo, Next.js 15, Fastify, GraphQL Yoga, Pothos, Drizzle ORM, Postgres, Lucia v3, SIWE, Discourse, Foundry, Base (L2).
+TypeScript · pnpm workspaces · Turborepo · Next.js 15 · Fastify · GraphQL Yoga · Pothos · Drizzle ORM · Postgres (Neon) · Lucia v3 · SIWE · Discourse · Foundry · Base (L2) · Vitest · Playwright · Forge
 
 ## Reference implementation
 
-[Ipê Hub](https://ipehub.xyz) — community platform for Ipê City, Florianópolis, Brazil.
+[Ipê Hub](https://ipehub.xyz) — community platform for Ipê City, Florianópolis, Brazil. Adds `/community` route consuming `@polisprotocol/react`.
+
+## Contributing
+
+See [`CONTRIBUTING.md`](./CONTRIBUTING.md). All commits follow Conventional Commits. Every non-trivial PR opens a Changeset.
+
+## Governance & policies
+
+- [`GOVERNANCE.md`](./GOVERNANCE.md) — decision making
+- [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) — community standards
+- [`SECURITY.md`](./SECURITY.md) — vulnerability disclosure
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE).
-
-Maintained by [DeegaLabs](https://deegalabs.com).
+[Apache 2.0](./LICENSE). Maintained by [DeegaLabs](https://deegalabs.com.br).

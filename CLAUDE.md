@@ -12,10 +12,9 @@ Target: `v0.1.0` by **May 1, 2026** (Ipê City 2026 closing day).
 
 ## Key files in this directory
 
-- `bootstrap-polis.sh` — creates the monorepo at `~/work/polis/` (scaffold, CI, governance files, first commit)
-- `DEVELOPMENT-PLAN.md` — full sprint plan (Sprints 0-5), task breakdown, Claude Code prompt library, scope freeze rules
-- `CLAUDE.polis-protocol.md` — CLAUDE.md template to copy into the protocol monorepo
-- `CLAUDE.ipehub.md` — CLAUDE.md template to copy into the ipehub app repo
+- `docs/` — contributor-facing documentation (architecture, decisions, deployment, env, testing, glossary). Start with `docs/README.md`.
+- `apps/docs/` — user-facing Mintlify docs published at docs.polis-protocol.org
+- `temp/` — local-only working directory, gitignored. Historical scripts and templates live here.
 
 ## Two-repo architecture
 
@@ -142,7 +141,7 @@ cd ~/work/ipehub && pnpm link --global @polisprotocol/react @polisprotocol/core 
 
 ## Sprint reference
 
-Development follows 5 sprints in `DEVELOPMENT-PLAN.md`:
+Development follows 5 sprints in `docs/DEVELOPMENT_PLAN.md`:
 - Sprint 0 (Day 0): Setup and decisions
 - Sprint 1 (Days 1-2): Monorepo bootstrap, CI, docs scaffold
 - Sprint 2 (Days 3-4): @polisprotocol/core + @polisprotocol/bff, Discourse, SIWE auth
@@ -151,3 +150,11 @@ Development follows 5 sprints in `DEVELOPMENT-PLAN.md`:
 - Sprint 5 (Days 9-10): CLI, docs, v0.1.0 release
 
 Scope freeze after Apr 26 18:00 BRT — only bug fixes, polish, docs, tests, performance.
+
+## Documentation map
+
+- **Contributor docs:** `docs/` (architecture, decisions, deployment, env, testing, glossary)
+- **User docs:** `apps/docs/` → https://docs.polis-protocol.org
+- **Governance:** `README.md`, `CONTRIBUTING.md`, `GOVERNANCE.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `LICENSE`
+- **Sprint plan:** `docs/DEVELOPMENT_PLAN.md`
+- **Local scratch:** `temp/` (gitignored)

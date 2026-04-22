@@ -36,3 +36,6 @@ pnpm-debug.log*
 # Foundry
 packages/contracts/cache
 packages/contracts/out
+
+# Temporary / historical files (not tracked)
+temp/
