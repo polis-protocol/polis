@@ -45,6 +45,7 @@ curl -Ls https://cli.doppler.com/install.sh | sudo sh
 | Alchemy | https://dashboard.alchemy.com/signup | Base RPC |
 | Neynar | https://dev.neynar.com/ | Farcaster bridge |
 | Luma | https://lu.ma/home | Event integration |
+| Privy | https://dashboard.privy.io/ | Auth + embedded wallets (free up to 1k MAU) — opt-in per consumer app, see ADR-013 |
 
 ### Paid (low cost)
 
@@ -96,6 +97,13 @@ SENTRY_DSN=<from-sentry-dashboard>
 NEXT_PUBLIC_SENTRY_DSN=<ditto>
 LUMA_EVENT_ID=<from-luma-event-url>
 ARCHIVE_CONTRACT=0x...  # Base mainnet PolisArchive address
+
+# Auth — only if integrations.auth.provider = 'privy' (see ADR-013)
+NEXT_PUBLIC_PRIVY_APP_ID=<from-privy-dashboard>
+
+# Livestream — only if integrations.livestream is configured (see ADR-012)
+NEXT_PUBLIC_LIVESTREAM_STATUS_URL=https://tv.yourcity.xyz/api/status
+NEXT_PUBLIC_LIVESTREAM_PLAYER_URL=https://tv.yourcity.xyz/watch
 ```
 
 ### `@polisprotocol/contracts`

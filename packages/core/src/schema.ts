@@ -95,11 +95,37 @@ export const OnchainIntegrationSchema = z.object({
   archive: z.string().optional(),
 });
 
+export const AuthIntegrationSchema = z.discriminatedUnion('provider', [
+  z.object({
+    provider: z.literal('rainbowkit'),
+    projectId: z.string().optional(),
+  }),
+  z.object({
+    provider: z.literal('privy'),
+    appId: z.string(),
+    loginMethods: z
+      .array(z.enum(['email', 'google', 'apple', 'twitter', 'farcaster', 'wallet', 'sms']))
+      .default(['email', 'wallet']),
+    embeddedWallets: z.enum(['users-without-wallets', 'all-users', 'off']).default('users-without-wallets'),
+  }),
+  z.object({
+    provider: z.literal('custom'),
+  }),
+]);
+
+export const LivestreamIntegrationSchema = z.object({
+  statusUrl: z.string().url(),
+  playerUrl: z.string().url(),
+  chatChannelSlug: z.string().optional(),
+});
+
 export const IntegrationsSchema = z.object({
   discourse: DiscourseIntegrationSchema,
+  auth: AuthIntegrationSchema.optional(),
   luma: LumaIntegrationSchema.optional(),
   farcaster: FarcasterIntegrationSchema.optional(),
   onchain: OnchainIntegrationSchema.optional(),
+  livestream: LivestreamIntegrationSchema.optional(),
 });
 export type Integrations = z.infer<typeof IntegrationsSchema>;
 
